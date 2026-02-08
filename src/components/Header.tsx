@@ -96,10 +96,10 @@ export default function Header() {
 
         {/* Center: Nav */}
         <nav className="app-header-nav">
-          <Link href="/climate" className="app-header-nav-link">
+          {/* <Link href="/climate" className="app-header-nav-link">
             Climate Emergencies
-          </Link>
-          <div
+          </Link> */}
+          {/* <div
             className="app-header-nav-item app-header-dropdown"
             ref={initiativesRef}
             onMouseEnter={() => setOpenDropdown('initiatives')}
@@ -130,7 +130,7 @@ export default function Header() {
                 </Link>
               ))}
             </div>
-          </div>
+          </div> */}
           {/* <div
             className="app-header-nav-item app-header-dropdown"
             ref={impactRef}

@@ -82,16 +82,6 @@ export default function TeamPage() {
             ))}
           </div>
         </section>
-
-        <p className="content-cta">
-          <Link href="/contact" className="link-button">Contact us</Link>
-        </p>
-
-        <footer className="compact-footer">
-          <p className="compact-footer-copy">
-            © {new Date().getFullYear()} NaturGeist · <Link href="/causes">Causes</Link> · <Link href="/impact">Impact</Link> · <Link href="/contact">Contact</Link>
-          </p>
-        </footer>
       </div>
     </main>
   );

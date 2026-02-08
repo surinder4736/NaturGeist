@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 const PURPOSE_ITEMS = [
   'Environmental stress and climate vulnerability',
@@ -128,7 +129,7 @@ export default function HomePage() {
           <div className="lp-who-image lp-reveal lp-reveal-right">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://images.unsplash.com/photo-1529156069898-49953e7b63ac?w=600&h=500&fit=crop"
+              src="https://images.unsplash.com/photo-1511497584788-876760111969?w=500&h=400&fit=crop"
               alt="Community and people at the heart of our work—care for people and planet"
               width={600}
               height={500}
@@ -259,20 +260,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="lp-footer">
-        <div className="lp-footer-inner">
-          <p className="lp-footer-copy">
-            © {new Date().getFullYear()} NaturGeist Society for People and Planet.
-          </p>
-          <div className="lp-footer-links">
-            <Link href="/causes">Causes</Link>
-            <Link href="/impact">Impact</Link>
-            <Link href="/contact">Contact</Link>
-            <Link href="/team">Team</Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
