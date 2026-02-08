@@ -211,45 +211,47 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Collaboration & Partnerships */}
-      <section className="lp-collab" ref={setRef(5)}>
-        <div className="lp-collab-inner lp-reveal">
-          <h2 className="lp-collab-title">COLLABORATION & PARTNERSHIPS</h2>
-          <p className="lp-collab-intro">We collaborate with:</p>
-          <ul className="lp-collab-list">
-            {COLLABORATION_ITEMS.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-          <p className="lp-collab-close">
-            We value shared learning, ethical practice, and mutual respect.
-          </p>
-        </div>
-      </section>
-
-      {/* Transparency & Ethics – with subtle image */}
-      <section className="lp-transparency" ref={setRef(6)}>
-        <div className="lp-transparency-wrap">
-          <div className="lp-transparency-inner lp-reveal">
-            <h2 className="lp-transparency-title">TRANSPARENCY & ETHICS</h2>
-            <p className="lp-transparency-text">
-              NaturGeist Society for People and Planet is a not-for-profit organisation. All resources are used solely to advance the Society&apos;s aims and objectives. No member has any personal claim over the Society&apos;s assets or income. We are committed to transparency, accountability, and ethical governance.
+      {/* Collaboration & Partnerships + Transparency & Ethics – one attractive block */}
+      <section className="lp-trust-block" ref={setRef(5)}>
+        <div className="lp-trust-inner">
+          <div className="lp-collab-card lp-reveal">
+            <span className="lp-collab-accent" aria-hidden />
+            <h2 className="lp-collab-title">COLLABORATION & PARTNERSHIPS</h2>
+            <p className="lp-collab-intro">We collaborate with:</p>
+            <ul className="lp-collab-list">
+              {COLLABORATION_ITEMS.map((item) => (
+                <li key={item}><span className="lp-collab-bullet" aria-hidden /><span>{item}</span></li>
+              ))}
+            </ul>
+            <p className="lp-collab-close">
+              We value shared learning, ethical practice, and mutual respect.
             </p>
           </div>
-          <div className="lp-transparency-image lp-reveal lp-reveal-right">
-            <Image
-              src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop"
-              alt="Community engagement"
-              width={400}
-              height={300}
-              className="lp-img"
-            />
+
+          <div className="lp-transparency-row">
+            <div className="lp-transparency-card lp-reveal">
+              <h2 className="lp-transparency-title">TRANSPARENCY & ETHICS</h2>
+              <p className="lp-transparency-text">
+                NaturGeist Society for People and Planet is a not-for-profit organisation. All resources are used solely to advance the Society&apos;s aims and objectives. No member has any personal claim over the Society&apos;s assets or income. We are committed to transparency, accountability, and ethical governance.
+              </p>
+            </div>
+            <div className="lp-transparency-image-wrap lp-reveal lp-reveal-right">
+              <div className="lp-transparency-image">
+                <Image
+                  src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=500&h=380&fit=crop"
+                  alt="Community engagement and volunteer spirit"
+                  width={500}
+                  height={380}
+                  className="lp-img"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA strip */}
-      <section className="lp-cta" ref={setRef(7)}>
+      <section className="lp-cta" ref={setRef(6)}>
         <div className="lp-cta-inner lp-reveal">
           <p className="lp-cta-text">Care • Perseverance • People & Planet</p>
           <div className="lp-cta-buttons">

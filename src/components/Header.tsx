@@ -195,7 +195,7 @@ export default function Header() {
               ))}
             </div>
           </div> */}
-          <div
+          {/* <div
             className="app-header-nav-item app-header-dropdown"
             ref={aboutUsRef}
             onMouseEnter={() => setOpenDropdown('about-us')}
@@ -226,7 +226,7 @@ export default function Header() {
                 </Link>
               ))}
             </div>
-          </div>
+          </div> */}
           <Link href="/our-mission" className="app-header-nav-link">
             Our Mission
           </Link>
