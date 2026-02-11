@@ -1,11 +1,7 @@
-import type { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Team – NaturGeist',
-  description: 'Governing body and team behind NaturGeist.',
-};
+import { useState } from 'react';
+import Image from 'next/image';
 
 const GOVERNING_BODY = [
   {
@@ -58,6 +54,26 @@ const EXECUTIVE_MEMBERS = [
    },
 ] as const;
 
+function TeamImage({ src, alt, id }: { src: string; alt: string; id: string }) {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div className="team-card-avatar">
+      {!loaded && <div className="team-card-avatar-skeleton" aria-hidden="true" />}
+      <Image 
+        src={src} 
+        alt={alt} 
+        fill
+        className={`team-card-avatar-image ${loaded ? 'team-card-avatar-loaded' : ''}`}
+        loading="lazy" 
+        quality={90}
+        sizes="200px"
+        onLoad={() => setLoaded(true)}
+      />
+    </div>
+  );
+}
+
 export default function TeamPage() {
   return (
     <main className="page-content">
@@ -72,21 +88,10 @@ export default function TeamPage() {
           <div className="team-grid team-grid-governing">
             {GOVERNING_BODY.map((person) => (
               <div key={person.role} className="team-card team-card-governing">
-                <div className="team-card-avatar">
-                  <Image 
-                    src={person.image} 
-                    alt={person.name} 
-                    fill
-                    className="team-card-avatar-image" 
-                    loading="lazy" 
-                    quality={90}
-                    sizes="200px"
-                  />
-                </div>
+                <TeamImage src={person.image} alt={person.name} id={person.role} />
                 <span className="team-card-badge">{person.role}</span>
                 <h3 className="team-card-name">{person.name}</h3>
                 <p className="team-card-role">{person.description}</p>
-                {/* <p className="team-card-location">{person.location}</p> */}
               </div>
             ))}
           </div>
@@ -97,20 +102,9 @@ export default function TeamPage() {
           <div className="team-grid team-grid-executive">
             {EXECUTIVE_MEMBERS.map((person) => (
               <div key={person.name} className="team-card">
-                <div className="team-card-avatar">
-                  <Image 
-                    src={person.image} 
-                    alt={person.name} 
-                    fill
-                    className="team-card-avatar-image" 
-                    loading="lazy" 
-                    quality={90}
-                    sizes="200px"
-                  />
-                </div>
+                <TeamImage src={person.image} alt={person.name} id={person.name} />
                 <h3 className="team-card-name">{person.name}</h3>
                 <p className="team-card-role">{person.description}</p>
-                {/* <p className="team-card-location">{person.location}</p> */}
               </div>
             ))}
           </div>
