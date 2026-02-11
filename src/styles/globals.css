@@ -1860,8 +1860,8 @@ a {
 }
 
 .team-card-avatar {
-  width: 140px;
-  height: 140px;
+  width: 200px;
+  height: 200px;
   margin: 0 auto 1.25rem;
   border-radius: 50%;
   background: var(--teal-100);
@@ -1869,6 +1869,15 @@ a {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.team-card-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .team-card-avatar-placeholder {
