@@ -40,15 +40,15 @@ const COMMUNITY_NATURE_IMAGES = [
 const UPCOMING_EVENTS = [
   {
     id: 1,
-    title: 'NaturGeist Community Gathering 2026',
+    title: 'Action for Economic Empowerment of Women',
     date: 'March 14, 2026',
     day: '14',
     month: 'MAR',
-    time: '10:00 AM - 5:00 PM',
-    location: 'Community Hall, Delhi',
-    description: 'Join us for our flagship community gathering focused on sustainable living, environmental awareness, and community building. Participate in workshops, discussions, and networking sessions.',
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop',
-    featured: true,
+    time: '01:00 PM - 02:00 PM',
+    location: 'Online Webinar',
+    description: 'Nature Geist Society for People and Planet is pleased to invite you to a webinar on the topic "Action for Economic Empowerment of Women", organized to promote awareness and dialogue around women`s economic participation and financial confidence. We are honored to have Prof. Vikas Singh as the speaker and Subha Dogra as the chair for this session.',
+    image: '/images/project/final-flyer.jpg',
+    featured: false,
   },
 ];
 
@@ -141,46 +141,44 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          <div className="lp-who-image lp-reveal lp-reveal-right">
+          <div className="lp-who-image lp-reveal lp-reveal-right" style={{ display: 'none' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            {/* <img
               src="https://images.unsplash.com/photo-1511497584788-876760111969?w=500&h=400&fit=crop"
               alt="Community and people at the heart of our work—care for people and planet"
               width={600}
               height={500}
               className="lp-img"
               loading="lazy"
-            />
+            /> */}
           </div>
         </div>
       </section>
 
       {/* Our Purpose */}
       <section className="lp-purpose" ref={setRef(1)}>
-        <div className="lp-purpose-inner lp-reveal">
-          <h2 className="lp-purpose-title">OUR PURPOSE</h2>
-          <p className="lp-purpose-intro">Across regions, communities face:</p>
-          <ul className="lp-purpose-list">
-            {PURPOSE_ITEMS.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* Our Guiding Ethos */}
-      <section className="lp-ethos" ref={setRef(2)}>
-        <div className="lp-ethos-inner lp-reveal">
-          <h2 className="lp-ethos-title">OUR GUIDING ETHOS</h2>
+        <div className="lp-purpose-grid lp-reveal">
+          <div className="lp-purpose-inner lp-reveal">
+            <h2 className="lp-purpose-title">OUR PURPOSE</h2>
+            <p className="lp-purpose-intro">Across regions, communities face:</p>
+            <ul className="lp-purpose-list">
+              {PURPOSE_ITEMS.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="lp-purpose-inner lp-reveal">
+          <h2 className="lp-purpose-title">OUR GUIDING ETHOS</h2>
           <p className="lp-ethos-sanskrit" lang="sa">सर्वहिताय साधनम्</p>
           <p className="lp-ethos-text">
             An instrument of sustained effort for the welfare of all. This principle reflects our belief that meaningful social and ecological change requires care, perseverance, and collective responsibility.
           </p>
         </div>
-      </section>
+        </div>
 
+      </section>
       {/* Community & Nature – 2x2 image grid */}
-      <section className="lp-community" ref={setRef(3)} style={{display: 'none'}}>
+      <section className="lp-community" ref={setRef(3)} style={{ display: 'none' }}>
         <div className="lp-community-inner">
           <h2 className="lp-community-title lp-reveal">Community & Nature</h2>
           <p className="lp-community-subtitle lp-reveal">Environmental stewardship, community engagement, and care for people and planet.</p>
@@ -204,7 +202,7 @@ export default function HomePage() {
       </section>
 
       {/* How We Work – with image */}
-      <section className="lp-how" ref={setRef(4)}>
+      <section className="lp-how" ref={setRef(4)} style={{ display: 'none' }}>
         <div className="lp-how-grid">
           <div className="lp-how-image lp-reveal">
             <Image
@@ -245,10 +243,10 @@ export default function HomePage() {
                     height={400}
                     className="lp-img"
                   />
-                  <div className="lp-event-date-badge">
+                  {/* <div className="lp-event-date-badge">
                     <span className="lp-event-day">{event.day}</span>
                     <span className="lp-event-month">{event.month}</span>
-                  </div>
+                  </div> */}
                   {event.featured && <span className="lp-event-featured-tag">Featured Event</span>}
                 </div>
                 <div className="lp-event-content">
@@ -282,7 +280,7 @@ export default function HomePage() {
       </section>
 
       {/* Collaboration & Partnerships + Transparency & Ethics – one attractive block */}
-      <section className="lp-trust-block" ref={setRef(5)} style={{display: 'none'}}>
+      <section className="lp-trust-block" ref={setRef(5)} style={{ display: 'none' }}>
         <div className="lp-trust-inner">
           <div className="lp-collab-card lp-reveal">
             <span className="lp-collab-accent" aria-hidden />
