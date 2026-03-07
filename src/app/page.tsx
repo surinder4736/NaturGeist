@@ -87,8 +87,8 @@ export default function HomePage() {
         <div className="lp-hero-waves" aria-hidden />
         <div className="lp-hero-bg">
           <Image
-            src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&h=1080&fit=crop"
-            alt="Lush green forest with sunlight filtering through trees"
+            src="/images/team-group-photo.jpg"
+            alt="NaturGeist team members group photo"
             fill
             className="lp-hero-bg-img"
             priority
