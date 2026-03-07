@@ -37,6 +37,21 @@ const COMMUNITY_NATURE_IMAGES = [
   { src: 'https://images.unsplash.com/photo-1511497584788-876760111969?w=500&h=400&fit=crop', alt: 'Community appreciating nature at sunset', caption: 'Nature & togetherness' },
 ];
 
+const UPCOMING_EVENTS = [
+  {
+    id: 1,
+    title: 'NaturGeist Community Gathering 2026',
+    date: 'March 14, 2026',
+    day: '14',
+    month: 'MAR',
+    time: '10:00 AM - 5:00 PM',
+    location: 'Community Hall, Delhi',
+    description: 'Join us for our flagship community gathering focused on sustainable living, environmental awareness, and community building. Participate in workshops, discussions, and networking sessions.',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop',
+    featured: true,
+  },
+];
+
 export default function HomePage() {
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
 
@@ -164,8 +179,63 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Upcoming Events */}
+      <section className="lp-events" ref={setRef(3)}>
+        <div className="lp-events-inner">
+          <div className="lp-events-header lp-reveal">
+            <span className="lp-events-badge">Upcoming</span>
+            <h2 className="lp-events-title">Join Our Next Event</h2>
+            <p className="lp-events-subtitle">Be part of our community initiatives and make a difference together</p>
+          </div>
+          <div className="lp-events-grid">
+            {UPCOMING_EVENTS.map((event) => (
+              <div key={event.id} className={`lp-event-card lp-reveal ${event.featured ? 'lp-event-featured' : ''}`}>
+                <div className="lp-event-image">
+                  <Image
+                    src={event.image}
+                    alt={event.title}
+                    width={600}
+                    height={400}
+                    className="lp-img"
+                  />
+                  <div className="lp-event-date-badge">
+                    <span className="lp-event-day">{event.day}</span>
+                    <span className="lp-event-month">{event.month}</span>
+                  </div>
+                  {event.featured && <span className="lp-event-featured-tag">Featured Event</span>}
+                </div>
+                <div className="lp-event-content">
+                  <h3 className="lp-event-name">{event.title}</h3>
+                  <p className="lp-event-desc">{event.description}</p>
+                  <div className="lp-event-meta">
+                    <div className="lp-event-meta-item">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      <span>{event.time}</span>
+                    </div>
+                    <div className="lp-event-meta-item">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                      <span>{event.location}</span>
+                    </div>
+                  </div>
+                  <div className="lp-event-actions">
+                    <Link href="/contact" className="lp-btn lp-btn-primary">Register Now</Link>
+                    <Link href="/contact" className="lp-btn lp-btn-secondary">Learn More</Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Community & Nature – 2x2 image grid */}
-      <section className="lp-community" ref={setRef(3)}>
+      <section className="lp-community" ref={setRef(4)}>
         <div className="lp-community-inner">
           <h2 className="lp-community-title lp-reveal">Community & Nature</h2>
           <p className="lp-community-subtitle lp-reveal">Environmental stewardship, community engagement, and care for people and planet.</p>
@@ -189,7 +259,7 @@ export default function HomePage() {
       </section>
 
       {/* How We Work – with image */}
-      <section className="lp-how" ref={setRef(4)}>
+      <section className="lp-how" ref={setRef(5)}>
         <div className="lp-how-grid">
           <div className="lp-how-image lp-reveal">
             <Image
@@ -212,7 +282,7 @@ export default function HomePage() {
       </section>
 
       {/* Collaboration & Partnerships + Transparency & Ethics – one attractive block */}
-      <section className="lp-trust-block" ref={setRef(5)}>
+      <section className="lp-trust-block" ref={setRef(6)}>
         <div className="lp-trust-inner">
           <div className="lp-collab-card lp-reveal">
             <span className="lp-collab-accent" aria-hidden />
@@ -251,7 +321,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA strip */}
-      <section className="lp-cta" ref={setRef(6)}>
+      <section className="lp-cta" ref={setRef(7)}>
         <div className="lp-cta-inner lp-reveal">
           <p className="lp-cta-text">Care • Perseverance • People & Planet</p>
           <div className="lp-cta-buttons">
