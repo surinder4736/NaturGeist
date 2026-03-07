@@ -50,7 +50,7 @@ export default function UpcomingEventsPage() {
             <div className="ue-flyer-card ue-flyer-main">
               <div className="ue-flyer-wrapper">
                 <Image
-                  src="/images/events/flyer-with-chair.jpg"
+                  src="/images/project/flyer-with-chair-final.jpg"
                   alt="Action for Economic Empowerment Workshop Flyer"
                   width={500}
                   height={650}
@@ -62,7 +62,7 @@ export default function UpcomingEventsPage() {
             <div className="ue-flyer-card ue-flyer-secondary">
               <div className="ue-flyer-wrapper">
                 <Image
-                  src="/images/events/final-flyer.jpg"
+                  src="/images/project/final-flyer.jpg"
                   alt="International Women's Day 2026 Workshop Flyer"
                   width={600}
                   height={450}

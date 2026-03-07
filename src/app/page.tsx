@@ -125,7 +125,7 @@ export default function HomePage() {
       </section>
 
       {/* Who We Are – with image + scroll reveal */}
-      <section className="lp-who" ref={setRef(0)}>
+      <section className="lp-join" ref={setRef(0)}>
         <div className="lp-who-waves" aria-hidden />
         <div className="lp-who-grid lp-reveal">
           <div className="lp-who-inner">
@@ -160,7 +160,7 @@ export default function HomePage() {
       </section>
 
       {/* Our Purpose */}
-      <section className="lp-purpose" ref={setRef(1)}>
+      <section className="lp-join" ref={setRef(1)}>
         <div className="lp-purpose-grid lp-reveal">
           <div className="lp-purpose-inner lp-reveal">
             <h2 className="lp-purpose-title">OUR PURPOSE</h2>
@@ -403,30 +403,33 @@ export default function HomePage() {
               and care for both people and planet. Become part of our
               long-term, dignity-centred work.
             </p>
+            <Link href="/join-us" className="lp-btn lp-btn-primary">
+              Join Us
+            </Link>
           </div>
 
-          <div className="lp-join-actions">
+          {/* <div className="lp-join-actions">
             <Link href="/join-us" className="lp-btn lp-btn-primary">
               Join Us
             </Link>
             <Link href="/contribute" className="lp-btn lp-btn-secondary">
               Support Our Work
             </Link>
-          </div>
+          </div> */}
         </div>
       </section>
 
       {/* CTA strip */}
-      <section className="lp-cta" ref={setRef(6)}>
+      {/* <section className="lp-join" ref={setRef(6)} style={{display: 'none'}}>
         <div className="lp-cta-inner lp-reveal">
           <p className="lp-cta-text">Care • Perseverance • People & Planet</p>
           <div className="lp-cta-buttons">
             <Link href="/our-mission" className="lp-btn lp-btn-primary">Our Mission</Link>
-            <Link href="/contact" className="lp-btn lp-btn-secondary">Contact Us</Link>
+            <Link href="/contact" className="lp-btn lp-btn-primary">Contact Us</Link>
             <Link href="/contribute" className="lp-btn lp-btn-primary">Contribute</Link>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <Footer />
     </main>
