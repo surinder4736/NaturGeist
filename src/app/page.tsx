@@ -87,8 +87,8 @@ export default function HomePage() {
         <div className="lp-hero-waves" aria-hidden />
         <div className="lp-hero-bg">
           <Image
-            src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1200&h=800&fit=crop"
-            alt=""
+            src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&h=1080&fit=crop"
+            alt="Lush green forest with sunlight filtering through trees"
             fill
             className="lp-hero-bg-img"
             priority

@@ -557,10 +557,14 @@ a {
 
 /* Hero */
 .lp-hero {
-  background: var(--lp-cream);
-  padding: 3rem 1.5rem 4rem;
+  background: var(--lp-dark);
+  padding: 4rem 1.5rem 5rem;
   position: relative;
   overflow: hidden;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .lp-hero-bg {
@@ -571,7 +575,7 @@ a {
 
 .lp-hero-bg-img {
   object-fit: cover;
-  opacity: 0.2;
+  opacity: 1;
   transition: transform 12s ease-out;
 }
 
@@ -582,7 +586,12 @@ a {
 .lp-hero-bg-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, var(--lp-cream) 0%, rgba(245, 240, 225, 0.97) 40%, var(--lp-cream) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(26, 60, 26, 0.85) 0%,
+    rgba(15, 90, 70, 0.75) 50%,
+    rgba(26, 60, 26, 0.85) 100%
+  );
   pointer-events: none;
 }
 
@@ -591,8 +600,9 @@ a {
   top: 0;
   left: 0;
   right: 0;
-  height: 120px;
-  background: linear-gradient(135deg, rgba(45, 88, 63, 0.06) 0%, transparent 50%);
+  height: 150px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 40'%3E%3Cpath fill='none' stroke='%23c8d96f' stroke-width='.5' d='M0 20 Q100 5 200 20 T400 20'/%3E%3Cpath fill='none' stroke='%23c8d96f' stroke-width='.5' d='M0 25 Q100 10 200 25 T400 25'/%3E%3C/svg%3E") center/cover;
+  opacity: 0.15;
   pointer-events: none;
   z-index: 1;
 }
@@ -616,11 +626,12 @@ a {
 .lp-hero-delay-3 { animation-delay: 0.45s; }
 
 .lp-hero-title {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 700;
-  color: var(--lp-dark-heading);
-  margin: 0 0 0.5rem;
-  line-height: 1.2;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  color: var(--white);
+  margin: 0 0 1rem;
+  line-height: 1.15;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
 }
 
 .lp-hero-line {
@@ -628,10 +639,11 @@ a {
 }
 
 .lp-hero-tagline {
-  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  font-size: clamp(0.8rem, 1.5vw, 0.9375rem);
   font-weight: 600;
-  color: #5f876e;
-  letter-spacing: 0.06em;
+  color: var(--lp-light-on-dark);
+  letter-spacing: 0.08em;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
   text-transform: uppercase;
   margin: 0 0 1.5rem;
   line-height: 1.4;
