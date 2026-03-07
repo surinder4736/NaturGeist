@@ -40,7 +40,7 @@ const COMMUNITY_NATURE_IMAGES = [
 const UPCOMING_EVENTS = [
   {
     id: 1,
-    title: 'Action for Economic Empowerment Workshop',
+    title: 'Action for Economic Empowerment of Women',
     date: 'March 14, 2026',
     day: '14',
     month: 'MAR',
