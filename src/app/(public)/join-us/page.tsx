@@ -75,7 +75,7 @@ const VALUES = [
 
 export default function JoinUsPage() {
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
-  const [activeTab, setActiveTab] = useState<'careers' | 'volunteer' | 'internship'>('careers');
+  const [activeTab, setActiveTab] = useState<'careers' | 'volunteer' | 'internship'>('volunteer');
 
   useEffect(() => {
     const observers = sectionRefs.current.filter(Boolean) as HTMLElement[];
@@ -125,10 +125,10 @@ export default function JoinUsPage() {
             Join NaturGeist and work towards sustainable development that centers dignity, community, and care for people and planet.
           </p>
           <div className="join-hero-actions">
-            <a href="#opportunities" className="join-btn join-btn-primary">
+            {/* <a href="#opportunities" className="join-btn join-btn-primary">
               View Opportunities
               <ArrowRight size={18} />
-            </a>
+            </a> */}
             <Link href="/contact" className="join-btn join-btn-secondary">
               Contact Us
             </Link>
@@ -202,13 +202,13 @@ export default function JoinUsPage() {
 
           {/* Tabs */}
           <div className="join-tabs lp-reveal">
-            <button
+            {/* <button
               className={`join-tab ${activeTab === 'careers' ? 'join-tab-active' : ''}`}
               onClick={() => setActiveTab('careers')}
             >
               <Briefcase size={18} />
               Careers
-            </button>
+            </button> */}
             <button
               className={`join-tab ${activeTab === 'volunteer' ? 'join-tab-active' : ''}`}
               onClick={() => setActiveTab('volunteer')}
@@ -216,13 +216,13 @@ export default function JoinUsPage() {
               <Heart size={18} />
               Volunteer
             </button>
-            <button
+            {/* <button
               className={`join-tab ${activeTab === 'internship' ? 'join-tab-active' : ''}`}
               onClick={() => setActiveTab('internship')}
             >
               <GraduationCap size={18} />
               Internship
-            </button>
+            </button> */}
           </div>
 
           {/* Careers Content */}
@@ -265,13 +265,13 @@ export default function JoinUsPage() {
                   </div>
                 ))}
               </div>
-              <div className="join-volunteer-cta lp-reveal">
+              {/* <div className="join-volunteer-cta lp-reveal">
                 <p>Ready to make a difference? Register as a volunteer today.</p>
                 <Link href="/contact" className="join-btn join-btn-primary">
                   Become a Volunteer
                   <ArrowRight size={18} />
                 </Link>
-              </div>
+              </div> */}
             </div>
           )}
 
