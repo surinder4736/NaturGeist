@@ -2052,6 +2052,11 @@ a {
   grid-template-columns: repeat(3, 1fr);
 }
 
+.team-grid-it {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 700px;
+}
+
 @media (max-width: 900px) {
   .team-grid-governing,
   .team-grid-executive {
@@ -2061,7 +2066,8 @@ a {
 
 @media (max-width: 520px) {
   .team-grid-governing,
-  .team-grid-executive {
+  .team-grid-executive,
+  .team-grid-it {
     grid-template-columns: 1fr;
   }
 }
@@ -2083,6 +2089,55 @@ a {
 
 .team-card-governing {
   border-left: 4px solid var(--teal-600);
+}
+
+/* IT Department Section */
+.team-section-it {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--gray-200);
+}
+
+.team-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.team-section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--teal-500), var(--teal-600));
+  color: var(--white);
+  border-radius: 8px;
+}
+
+.team-section-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.team-section-desc {
+  font-size: 0.9375rem;
+  color: var(--gray-600);
+  margin: -0.5rem 0 1.5rem;
+  padding-left: 0;
+}
+
+.team-card-it {
+  border-left: 4px solid var(--orange-gold);
+  background: linear-gradient(135deg, var(--white) 0%, rgba(200, 217, 111, 0.05) 100%);
+}
+
+.team-card-it:hover {
+  border-color: var(--orange-gold-dark);
+}
+
+.team-card-badge-it {
+  background: linear-gradient(135deg, var(--orange-gold), var(--orange-gold-dark));
 }
 
 .team-card-badge {

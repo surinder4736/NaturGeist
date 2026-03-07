@@ -54,6 +54,23 @@ const EXECUTIVE_MEMBERS = [
    },
 ] as const;
 
+const IT_DEPARTMENT = [
+  {
+    name: 'Mr. Surinder Singh',
+    role: 'IT Head',
+    description: 'Full Stack Developer & Technical Lead',
+    location: '-',
+    image: '/images/team/it-member-1.jpg',
+  },
+  {
+    name: 'Mr. Rahul Sharma',
+    role: 'Web Developer',
+    description: 'Frontend Developer & UI/UX Specialist',
+    location: '-',
+    image: '/images/team/it-member-2.jpg',
+  },
+] as const;
+
 function TeamImage({ src, alt, id }: { src: string; alt: string; id: string }) {
   const [loaded, setLoaded] = useState(false);
 
@@ -103,6 +120,30 @@ export default function TeamPage() {
             {EXECUTIVE_MEMBERS.map((person) => (
               <div key={person.name} className="team-card">
                 <TeamImage src={person.image} alt={person.name} id={person.name} />
+                <h3 className="team-card-name">{person.name}</h3>
+                <p className="team-card-role">{person.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="team-section team-section-it">
+          <h2 className="team-section-title">
+            <span className="team-section-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+            </span>
+            IT Department
+          </h2>
+          <p className="team-section-desc">The tech team powering NaturGeist&apos;s digital presence and innovation.</p>
+          <div className="team-grid team-grid-it">
+            {IT_DEPARTMENT.map((person) => (
+              <div key={person.name} className="team-card team-card-it">
+                <TeamImage src={person.image} alt={person.name} id={person.name} />
+                <span className="team-card-badge team-card-badge-it">{person.role}</span>
                 <h3 className="team-card-name">{person.name}</h3>
                 <p className="team-card-role">{person.description}</p>
               </div>
