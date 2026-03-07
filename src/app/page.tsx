@@ -330,7 +330,7 @@ export default function HomePage() {
                   </div>
                   
                   <div className="lp-event-cta">
-                    <Link href="/contact" className="lp-btn lp-btn-primary lp-btn-lg">
+                    <Link href="https://docs.google.com/forms/d/e/1FAIpQLScKNHm5VtKuke10UptgBcESUOjhIpyWrp4UJlfOgGJFB_JNtg/viewform" target='_blank' className="lp-btn lp-btn-primary lp-btn-lg">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                         <circle cx="8.5" cy="7" r="4" />
@@ -339,9 +339,9 @@ export default function HomePage() {
                       </svg>
                       Register Now
                     </Link>
-                    <Link href="/upcoming-events" className="lp-btn lp-btn-outline">
+                    {/* <Link href="/upcoming-events" className="lp-btn lp-btn-outline">
                       Learn More
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
               </div>
