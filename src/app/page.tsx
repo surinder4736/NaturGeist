@@ -180,7 +180,7 @@ export default function HomePage() {
       </section>
 
       {/* Community & Nature – 2x2 image grid */}
-      <section className="lp-community" ref={setRef(3)}>
+      <section className="lp-community" ref={setRef(3)} style={{display: 'none'}}>
         <div className="lp-community-inner">
           <h2 className="lp-community-title lp-reveal">Community & Nature</h2>
           <p className="lp-community-subtitle lp-reveal">Environmental stewardship, community engagement, and care for people and planet.</p>
@@ -282,7 +282,7 @@ export default function HomePage() {
       </section>
 
       {/* Collaboration & Partnerships + Transparency & Ethics – one attractive block */}
-      <section className="lp-trust-block" ref={setRef(5)}>
+      <section className="lp-trust-block" ref={setRef(5)} style={{display: 'none'}}>
         <div className="lp-trust-inner">
           <div className="lp-collab-card lp-reveal">
             <span className="lp-collab-accent" aria-hidden />
