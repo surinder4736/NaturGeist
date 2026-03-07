@@ -233,6 +233,9 @@ export default function Header() {
           <Link href="/team" className="app-header-nav-link">
             Team
           </Link>
+          <Link href="/join-us" className="app-header-nav-link">
+            Join Us
+          </Link>
           <Link href="/contact" className="app-header-nav-link">
             Contact
           </Link>
