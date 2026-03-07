@@ -236,12 +236,18 @@ export default function Header() {
           <Link href="/join-us" className="app-header-nav-link">
           Join Us
           </Link>
-          {/* <Link
-            href="/join-us"
-            className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+          <Link 
+            href="/#upcoming-events" 
+            className="app-header-nav-link"
+            onClick={(e) => {
+              if (window.location.pathname === '/') {
+                e.preventDefault();
+                document.getElementById('upcoming-events')?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
           >
-            Join Us
-          </Link> */}
+            Upcoming Events
+          </Link>
           <Link href="/contact" className="app-header-nav-link">
             Contact
           </Link>

@@ -40,15 +40,19 @@ const COMMUNITY_NATURE_IMAGES = [
 const UPCOMING_EVENTS = [
   {
     id: 1,
-    title: 'Action for Economic Empowerment of Women',
+    title: 'Action for Economic Empowerment Workshop',
     date: 'March 14, 2026',
     day: '14',
     month: 'MAR',
-    time: '01:00 PM - 02:00 PM',
+    time: '1:00 PM - 2:00 PM',
     location: 'Online Webinar',
-    description: 'Nature Geist Society for People and Planet is pleased to invite you to a webinar on the topic "Action for Economic Empowerment of Women", organized to promote awareness and dialogue around women`s economic participation and financial confidence. We are honored to have Prof. Vikas Singh as the speaker and Subha Dogra as the chair for this session.',
-    image: '/images/project/final-flyer.jpg',
-    featured: false,
+    description: 'NaturGeist Society for People and Planet is pleased to invite you to a webinar promoting awareness and dialogue around women\'s economic participation and financial confidence.',
+    image: '/images/events/economic-empowerment-webinar.jpg',
+    featured: true,
+    speakers: [
+      { name: 'Prof. Vikas Singh', role: 'Speaker' },
+      { name: 'Ms. Subha Dogra', role: 'Chair' },
+    ],
   },
 ];
 
@@ -225,57 +229,124 @@ export default function HomePage() {
       </section>
 
       {/* Upcoming Events */}
-      <section className="lp-events" ref={setRef(3)}>
-        <div className="lp-events-inner">
-          <div className="lp-events-header lp-reveal">
-            <span className="lp-events-badge">Upcoming</span>
-            <h2 className="lp-events-title">Join Our Next Event</h2>
-            <p className="lp-events-subtitle">Be part of our community initiatives and make a difference together</p>
+      <section className="lp-events-new" id="upcoming-events" ref={setRef(3)}>
+        <div className="lp-events-new-bg" aria-hidden="true">
+          <div className="lp-events-leaf lp-events-leaf-1" />
+          <div className="lp-events-leaf lp-events-leaf-2" />
+          <div className="lp-events-leaf lp-events-leaf-3" />
+          <div className="lp-events-leaf lp-events-leaf-4" />
+        </div>
+        <div className="lp-events-new-inner">
+          <div className="lp-events-new-header lp-reveal">
+            <span className="lp-events-new-badge">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              Upcoming Event
+            </span>
+            <h2 className="lp-events-new-title">Join Our Next Workshop</h2>
+            <p className="lp-events-new-subtitle">Be part of our community initiatives and make a difference together</p>
           </div>
-          <div className="lp-events-grid">
-            {UPCOMING_EVENTS.map((event) => (
-              <div key={event.id} className={`lp-event-card lp-reveal ${event.featured ? 'lp-event-featured' : ''}`}>
-                <div className="lp-event-image">
-                  <Image
-                    src={event.image}
-                    alt={event.title}
-                    width={600}
-                    height={400}
-                    className="lp-img"
-                  />
-                  {/* <div className="lp-event-date-badge">
-                    <span className="lp-event-day">{event.day}</span>
-                    <span className="lp-event-month">{event.month}</span>
-                  </div> */}
-                  {event.featured && <span className="lp-event-featured-tag">Featured Event</span>}
+          
+          {UPCOMING_EVENTS.map((event) => (
+            <div key={event.id} className="lp-event-showcase lp-reveal">
+              <div className="lp-event-showcase-grid">
+                {/* Left: Event Flyer Image */}
+                <div className="lp-event-flyer">
+                  <div className="lp-event-flyer-wrapper">
+                    <Image
+                      src={event.image}
+                      alt={event.title}
+                      width={450}
+                      height={600}
+                      className="lp-event-flyer-img"
+                    />
+                    <div className="lp-event-flyer-glow" aria-hidden="true" />
+                  </div>
                 </div>
-                <div className="lp-event-content">
-                  <h3 className="lp-event-name">{event.title}</h3>
-                  <p className="lp-event-desc">{event.description}</p>
-                  <div className="lp-event-meta">
-                    <div className="lp-event-meta-item">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="10" />
-                        <polyline points="12 6 12 12 16 14" />
-                      </svg>
-                      <span>{event.time}</span>
+                
+                {/* Right: Event Details */}
+                <div className="lp-event-details">
+                  <div className="lp-event-date-card">
+                    <div className="lp-event-date-day">{event.day}</div>
+                    <div className="lp-event-date-month">{event.month}</div>
+                    <div className="lp-event-date-year">2026</div>
+                  </div>
+                  
+                  <h3 className="lp-event-title">{event.title}</h3>
+                  
+                  <p className="lp-event-description">{event.description}</p>
+                  
+                  {event.speakers && (
+                    <div className="lp-event-speakers">
+                      <h4 className="lp-event-speakers-title">Featured Speakers</h4>
+                      <div className="lp-event-speakers-list">
+                        {event.speakers.map((speaker) => (
+                          <div key={speaker.name} className="lp-event-speaker">
+                            <div className="lp-event-speaker-avatar">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                              </svg>
+                            </div>
+                            <div className="lp-event-speaker-info">
+                              <span className="lp-event-speaker-name">{speaker.name}</span>
+                              <span className="lp-event-speaker-role">{speaker.role}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="lp-event-meta-item">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                      </svg>
-                      <span>{event.location}</span>
+                  )}
+                  
+                  <div className="lp-event-info-grid">
+                    <div className="lp-event-info-item">
+                      <div className="lp-event-info-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <circle cx="12" cy="12" r="10" />
+                          <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                      </div>
+                      <div className="lp-event-info-content">
+                        <span className="lp-event-info-label">Time</span>
+                        <span className="lp-event-info-value">{event.time}</span>
+                      </div>
+                    </div>
+                    <div className="lp-event-info-item">
+                      <div className="lp-event-info-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                          <circle cx="12" cy="10" r="3" />
+                        </svg>
+                      </div>
+                      <div className="lp-event-info-content">
+                        <span className="lp-event-info-label">Venue</span>
+                        <span className="lp-event-info-value">{event.location}</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="lp-event-actions">
-                    <Link href="/contact" className="lp-btn lp-btn-primary">Register Now</Link>
-                    <Link href="/contact" className="lp-btn lp-btn-secondary">Learn More</Link>
+                  
+                  <div className="lp-event-cta">
+                    <Link href="/contact" className="lp-btn lp-btn-primary lp-btn-lg">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="8.5" cy="7" r="4" />
+                        <line x1="20" y1="8" x2="20" y2="14" />
+                        <line x1="23" y1="11" x2="17" y2="11" />
+                      </svg>
+                      Register Now
+                    </Link>
+                    <Link href="/contact" className="lp-btn lp-btn-outline">
+                      Learn More
+                    </Link>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 
