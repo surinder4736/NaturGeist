@@ -236,6 +236,18 @@ export default function Header() {
           <Link href="/join-us" className="app-header-nav-link">
           Join Us
           </Link>
+          <Link 
+            href="/#upcoming-events" 
+            className="app-header-nav-link"
+            onClick={(e) => {
+              if (window.location.pathname === '/') {
+                e.preventDefault();
+                document.getElementById('upcoming-events')?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
+            Upcoming Events
+          </Link>
           {/* <Link
             href="/join-us"
             className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
@@ -248,7 +260,7 @@ export default function Header() {
         </nav>
 
         {/* Right: Search + Contribute */}
-        <div className="app-header-actions">
+        {/* <div className="app-header-actions">
           <button
             type="button"
             className="app-header-search"
@@ -272,7 +284,7 @@ export default function Header() {
           <Link href="/contribute" className="app-header-contribute">
             Contribute
           </Link>
-        </div>
+        </div> */}
       </div>
     </header>
   );
