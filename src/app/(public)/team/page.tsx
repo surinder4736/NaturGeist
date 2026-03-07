@@ -54,6 +54,23 @@ const EXECUTIVE_MEMBERS = [
    },
 ] as const;
 
+const IT_DEPARTMENT = [
+  {
+    name: 'Mr. Surinder Kumar',
+    role: 'IT Head',
+    description: 'Full Stack Developer & Technical Lead',
+    location: '-',
+    image: '/images/team/surinder-512.jpg',
+  },
+  // {
+  //   name: 'Mr. Rahul Sharma',
+  //   role: 'Web Developer',
+  //   description: 'Frontend Developer & UI/UX Specialist',
+  //   location: '-',
+  //   image: '/images/team/it-member-2.jpg',
+  // },
+] as const;
+
 function TeamImage({ src, alt, id }: { src: string; alt: string; id: string }) {
   const [loaded, setLoaded] = useState(false);
 
@@ -101,6 +118,19 @@ export default function TeamPage() {
           <h2 className="team-section-title">Executive Members</h2>
           <div className="team-grid team-grid-executive">
             {EXECUTIVE_MEMBERS.map((person) => (
+              <div key={person.name} className="team-card">
+                <TeamImage src={person.image} alt={person.name} id={person.name} />
+                <h3 className="team-card-name">{person.name}</h3>
+                <p className="team-card-role">{person.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="team-section">
+          <h2 className="team-section-title">IT Department</h2>
+          <div className="team-grid team-grid-executive">
+            {IT_DEPARTMENT.map((person) => (
               <div key={person.name} className="team-card">
                 <TeamImage src={person.image} alt={person.name} id={person.name} />
                 <h3 className="team-card-name">{person.name}</h3>

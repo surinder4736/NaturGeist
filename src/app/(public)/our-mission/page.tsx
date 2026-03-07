@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 
+
 export const metadata: Metadata = {
   title: 'Our Mission – NaturGeist',
   description: 'Environmental sustainability, sustainable livelihoods, gender equity, and mental health at NaturGeist.',
@@ -10,25 +11,25 @@ const MISSION_SECTIONS = [
   {
     title: 'Environmental Sustainability',
     text: 'Promoting climate awareness, ecological care, conservation, and responsible use of natural resources through education, research, advocacy, and community-based action.',
-    image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=500&h=320&fit=crop',
+    image: '/images/project/IMG-20260227-WA0012.jpg',
     alt: 'Community tree planting and environmental care',
   },
   {
     title: 'Sustainable Livelihoods',
     text: 'Strengthening livelihoods, especially for women, migrants, informal workers, and marginalised communities through skills development, capacity building, and locally rooted income opportunities.',
-    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=500&h=320&fit=crop',
+    image: '/images/project/sustainable.jpg',
     alt: 'Community harvesting and sustainable livelihoods',
   },
   {
     title: 'Gender Equity & Social Inclusion',
     text: 'Amplifying voices, addressing structural inequalities, and enabling meaningful participation of women and marginalised genders in social and economic spaces.',
-    image: 'https://images.unsplash.com/photo-1529156069898-49953e7b63ac?w=500&h=320&fit=crop',
+    image: '/images/project/gender-equity.jpg',
     alt: 'Community and inclusion',
   },
   {
     title: 'Mental Health & Psychosocial Well-Being',
     text: 'Supporting emotional resilience and psychosocial well-being through awareness programmes, community outreach, training, research, and culturally grounded approaches to care.',
-    image: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=500&h=320&fit=crop',
+    image: '/images/project/IMG-20260227-WA0016.jpg',
     alt: 'Community well-being and connection',
   },
 ] as const;
