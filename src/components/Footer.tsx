@@ -8,8 +8,8 @@ export default function Footer() {
           © {new Date().getFullYear()} NaturGeist Society for People and Planet.
         </p>
         <div className="lp-footer-links">
-          <Link href="/causes">Causes</Link>
-          <Link href="/impact">Impact</Link>
+          <Link href="/our-mission">Our Mission</Link>
+          <Link href="/join-us">Join Us</Link>
           <Link href="/contact">Contact</Link>
           <Link href="/team">Team</Link>
         </div>
