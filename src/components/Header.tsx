@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { UpcomingEventRecord } from '@/lib/upcoming-events/types';
 
 const INITIATIVES_LINKS = [
   { label: 'Cloth For Work', href: '/initiatives/cloth-for-work' },
@@ -47,6 +48,7 @@ const ABOUT_US_LINKS = [
 export default function Header() {
   const [logoError, setLogoError] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [announcementEvent, setAnnouncementEvent] = useState<UpcomingEventRecord | null>(null);
   const initiativesRef = useRef<HTMLDivElement>(null);
   const impactRef = useRef<HTMLDivElement>(null);
   const getInvolvedRef = useRef<HTMLDivElement>(null);
@@ -71,9 +73,36 @@ export default function Header() {
     }
   }, [openDropdown]);
 
+  useEffect(() => {
+    async function loadUpcomingAnnouncement() {
+      try {
+        const response = await fetch('/api/upcoming-events');
+        const payload = await response.json();
+        if (!response.ok) return;
+        setAnnouncementEvent((payload.events || [])[0] || null);
+      } catch {
+        setAnnouncementEvent(null);
+      }
+    }
+
+    loadUpcomingAnnouncement();
+  }, []);
+
+  function handleFloatingIndicatorClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (window.location.pathname === '/') {
+      e.preventDefault();
+      const section = document.getElementById('upcoming-events');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+    }
+  }
+
   return (
-    <header className="app-header">
-      <div className="app-header-inner">
+    <>
+      <header className="app-header">
+        <div className="app-header-inner">
         {/* Left: Logo + tagline + url */}
         <Link href="/" className="app-header-brand">
           <span className="app-header-logo-wrap">
@@ -236,17 +265,8 @@ export default function Header() {
           <Link href="/join-us" className="app-header-nav-link">
           Join Us
           </Link>
-          <Link 
-            href="/#upcoming-events" 
-            className="app-header-nav-link"
-            onClick={(e) => {
-              if (window.location.pathname === '/') {
-                e.preventDefault();
-                document.getElementById('upcoming-events')?.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-          >
-            Upcoming Events
+          <Link href="/events" className="app-header-nav-link">
+            Events
           </Link>
           {/* <Link
             href="/join-us"
@@ -259,33 +279,39 @@ export default function Header() {
           </Link>
         </nav>
 
-        {/* Right: Search + Contribute */}
-        {/* <div className="app-header-actions">
-          <button
-            type="button"
-            className="app-header-search"
-            aria-label="Search"
-          >
+        <div className="app-header-right" />
+        </div>
+      </header>
+
+      {announcementEvent && (
+        <Link
+          href="/#upcoming-events"
+          onClick={handleFloatingIndicatorClick}
+          className="floating-upcoming-indicator"
+          aria-label={`Upcoming event available: ${announcementEvent.title}`}
+          title={`${announcementEvent.title} • ${announcementEvent.date} • ${announcementEvent.startTime} - ${announcementEvent.endTime}`}
+        >
+          <span className="floating-upcoming-dot" aria-hidden />
+          <span className="floating-upcoming-icon-wrap" aria-hidden>
             <svg
-              width="20"
-              height="20"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              aria-hidden
             >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
             </svg>
-          </button>
-          <Link href="/contribute" className="app-header-contribute">
-            Contribute
-          </Link>
-        </div> */}
-      </div>
-    </header>
+          </span>
+          <span className="floating-upcoming-label">Register Now</span>
+        </Link>
+      )}
+    </>
   );
 }

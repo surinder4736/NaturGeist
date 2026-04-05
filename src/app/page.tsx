@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { UpcomingEventRecord } from '@/lib/upcoming-events/types';
 
 const PURPOSE_ITEMS = [
   'Environmental stress and climate vulnerability',
@@ -37,27 +38,17 @@ const COMMUNITY_NATURE_IMAGES = [
   { src: '/images/project/IMG-20260227-WA0013.jpg', alt: 'Community appreciating nature at sunset', caption: 'Nature & togetherness' },
 ];
 
-const UPCOMING_EVENTS = [
-  {
-    id: 1,
-    title: 'Action for Economic Empowerment of Women',
-    date: 'March 14, 2026',
-    day: '14',
-    month: 'MAR',
-    time: '1:00 PM - 2:00 PM',
-    location: 'Online Webinar',
-    description: 'NaturGeist Society for People and Planet is pleased to invite you to a webinar promoting awareness and dialogue around women\'s economic participation and financial confidence.',
-    image: '/images/project/economic-empowerment-webinar.jpg',
-    featured: true,
-    speakers: [
-      { name: 'Prof. Vikas Singh', role: 'Speaker' },
-      { name: 'Ms. Subha Dogra', role: 'Chair' },
-    ],
-  },
-];
+function getDay(value: string) {
+  return new Date(value).toLocaleDateString('en-IN', { day: '2-digit' });
+}
+
+function getMonth(value: string) {
+  return new Date(value).toLocaleDateString('en-IN', { month: 'short' }).toUpperCase();
+}
 
 export default function HomePage() {
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<UpcomingEventRecord[]>([]);
 
   useEffect(() => {
     const observers = sectionRefs.current.filter(Boolean) as HTMLElement[];
@@ -76,6 +67,21 @@ export default function HomePage() {
 
     observers.forEach((el) => io.observe(el));
     return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    async function loadUpcomingEvents() {
+      try {
+        const response = await fetch('/api/upcoming-events');
+        const payload = await response.json();
+        if (!response.ok) return;
+        setUpcomingEvents(payload.events || []);
+      } catch {
+        setUpcomingEvents([]);
+      }
+    }
+
+    loadUpcomingEvents();
   }, []);
 
   const setRef = (i: number) => (el: HTMLElement | null) => {
@@ -251,14 +257,14 @@ export default function HomePage() {
             <p className="lp-events-new-subtitle">Be part of our community initiatives and make a difference together</p>
           </div>
           
-          {UPCOMING_EVENTS.map((event) => (
+          {upcomingEvents.map((event) => (
             <div key={event.id} className="lp-event-showcase lp-reveal">
               <div className="lp-event-showcase-grid">
                 {/* Left: Event Flyer Image */}
                 <div className="lp-event-flyer">
                   <div className="lp-event-flyer-wrapper">
-                    <Image
-                      src={event.image}
+                    <img
+                      src={event.bannerUrl}
                       alt={event.title}
                       width={450}
                       height={600}
@@ -271,36 +277,14 @@ export default function HomePage() {
                 {/* Right: Event Details */}
                 <div className="lp-event-details">
                   <div className="lp-event-date-card">
-                    <div className="lp-event-date-day">{event.day}</div>
-                    <div className="lp-event-date-month">{event.month}</div>
-                    <div className="lp-event-date-year">2026</div>
+                    <div className="lp-event-date-day">{getDay(event.date)}</div>
+                    <div className="lp-event-date-month">{getMonth(event.date)}</div>
+                    <div className="lp-event-date-year">{new Date(event.date).getFullYear()}</div>
                   </div>
                   
                   <h3 className="lp-event-title">{event.title}</h3>
                   
                   <p className="lp-event-description">{event.description}</p>
-                  
-                  {event.speakers && (
-                    <div className="lp-event-speakers">
-                      <h4 className="lp-event-speakers-title">Featured Speakers</h4>
-                      <div className="lp-event-speakers-list">
-                        {event.speakers.map((speaker) => (
-                          <div key={speaker.name} className="lp-event-speaker">
-                            <div className="lp-event-speaker-avatar">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                <circle cx="12" cy="7" r="4" />
-                              </svg>
-                            </div>
-                            <div className="lp-event-speaker-info">
-                              <span className="lp-event-speaker-name">{speaker.name}</span>
-                              <span className="lp-event-speaker-role">{speaker.role}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                   
                   <div className="lp-event-info-grid">
                     <div className="lp-event-info-item">
@@ -312,7 +296,9 @@ export default function HomePage() {
                       </div>
                       <div className="lp-event-info-content">
                         <span className="lp-event-info-label">Time</span>
-                        <span className="lp-event-info-value">{event.time}</span>
+                        <span className="lp-event-info-value">
+                          {event.startTime} - {event.endTime}
+                        </span>
                       </div>
                     </div>
                     <div className="lp-event-info-item">
@@ -328,9 +314,37 @@ export default function HomePage() {
                       </div>
                     </div>
                   </div>
+
+                  {(event.speakers || []).length > 0 && (
+                    <div className="lp-event-speakers">
+                      <h4 className="lp-event-speakers-title">Featured Speakers</h4>
+                      <div className="lp-event-speakers-list">
+                        {event.speakers.map((speaker) => (
+                          <div key={speaker.id} className="lp-event-speaker">
+                            <div className="lp-event-speaker-avatar lp-event-speaker-avatar-img">
+                              <img src={speaker.imageUrl} alt={speaker.name} />
+                            </div>
+                            <div className="lp-event-speaker-info">
+                              <span className="lp-event-speaker-name">{speaker.name}</span>
+                              <span className="lp-event-speaker-role">{speaker.designation}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   
                   <div className="lp-event-cta">
-                    <Link href="https://docs.google.com/forms/d/e/1FAIpQLScKNHm5VtKuke10UptgBcESUOjhIpyWrp4UJlfOgGJFB_JNtg/viewform" target='_blank' className="lp-btn lp-btn-primary lp-btn-lg">
+                    <Link
+                      href={event.actionLink || '#'}
+                      target={event.actionLink ? '_blank' : undefined}
+                      rel={event.actionLink ? 'noopener noreferrer' : undefined}
+                      className="lp-btn lp-btn-primary lp-btn-lg"
+                      aria-disabled={!event.actionLink}
+                      onClick={(e) => {
+                        if (!event.actionLink) e.preventDefault();
+                      }}
+                    >
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                         <circle cx="8.5" cy="7" r="4" />
@@ -339,14 +353,14 @@ export default function HomePage() {
                       </svg>
                       Register Now
                     </Link>
-                    {/* <Link href="/upcoming-events" className="lp-btn lp-btn-outline">
-                      Learn More
-                    </Link> */}
                   </div>
                 </div>
               </div>
             </div>
           ))}
+          {upcomingEvents.length === 0 && (
+            <div className="lp-event-empty lp-reveal">No upcoming events are scheduled right now.</div>
+          )}
         </div>
       </section>
 
