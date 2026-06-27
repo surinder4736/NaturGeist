@@ -45,9 +45,18 @@ const ABOUT_US_LINKS = [
   { label: 'The Evolution Of Our Journey Together', href: '/about/evolution' },
 ] as const;
 
+const NAV_LINKS = [
+  { label: 'About Us', href: '/about-us' },
+  { label: 'Team', href: '/team' },
+  { label: 'Join Us', href: '/join-us' },
+  { label: 'Events', href: '/events' },
+  { label: 'Contact', href: '/contact' },
+] as const;
+
 export default function Header() {
   const [logoError, setLogoError] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [announcementEvent, setAnnouncementEvent] = useState<UpcomingEventRecord | null>(null);
   const initiativesRef = useRef<HTMLDivElement>(null);
   const impactRef = useRef<HTMLDivElement>(null);
@@ -125,139 +134,8 @@ export default function Header() {
 
         {/* Center: Nav */}
         <nav className="app-header-nav">
-          {/* <Link href="/climate" className="app-header-nav-link">
-            Climate Emergencies
-          </Link> */}
-          {/* <div
-            className="app-header-nav-item app-header-dropdown"
-            ref={initiativesRef}
-            onMouseEnter={() => setOpenDropdown('initiatives')}
-            onMouseLeave={() => setOpenDropdown(null)}
-          >
-            <button
-              type="button"
-              className="app-header-nav-link app-header-dropdown-trigger"
-              onClick={() => setOpenDropdown((v) => (v === 'initiatives' ? null : 'initiatives'))}
-              aria-expanded={openDropdown === 'initiatives'}
-              aria-haspopup="true"
-            >
-              Initiatives
-              <span className="app-header-chevron" aria-hidden>▼</span>
-            </button>
-            <div
-              className="app-header-dropdown-panel"
-              aria-hidden={openDropdown !== 'initiatives'}
-            >
-              {INITIATIVES_LINKS.map(({ label, href }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="app-header-dropdown-link"
-                  onClick={() => setOpenDropdown(null)}
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-          </div> */}
-          {/* <div
-            className="app-header-nav-item app-header-dropdown"
-            ref={impactRef}
-            onMouseEnter={() => setOpenDropdown('impact')}
-            onMouseLeave={() => setOpenDropdown(null)}
-          >
-            <button
-              type="button"
-              className="app-header-nav-link app-header-dropdown-trigger"
-              onClick={() => setOpenDropdown((v) => (v === 'impact' ? null : 'impact'))}
-              aria-expanded={openDropdown === 'impact'}
-              aria-haspopup="true"
-            >
-              Impact
-              <span className="app-header-chevron" aria-hidden>▼</span>
-            </button>
-            <div
-              className="app-header-dropdown-panel"
-              aria-hidden={openDropdown !== 'impact'}
-            >
-              {IMPACT_LINKS.map(({ label, href }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="app-header-dropdown-link"
-                  onClick={() => setOpenDropdown(null)}
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-          </div> */}
-          {/* <div
-            className="app-header-nav-item app-header-dropdown"
-            ref={getInvolvedRef}
-            onMouseEnter={() => setOpenDropdown('get-involved')}
-            onMouseLeave={() => setOpenDropdown(null)}
-          >
-            <button
-              type="button"
-              className="app-header-nav-link app-header-dropdown-trigger"
-              onClick={() => setOpenDropdown((v) => (v === 'get-involved' ? null : 'get-involved'))}
-              aria-expanded={openDropdown === 'get-involved'}
-              aria-haspopup="true"
-            >
-              Get Involved
-              <span className="app-header-chevron" aria-hidden>▼</span>
-            </button>
-            <div
-              className="app-header-dropdown-panel"
-              aria-hidden={openDropdown !== 'get-involved'}
-            >
-              {GET_INVOLVED_LINKS.map(({ label, href }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="app-header-dropdown-link"
-                  onClick={() => setOpenDropdown(null)}
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-          </div> */}
-          {/* <div
-            className="app-header-nav-item app-header-dropdown"
-            ref={aboutUsRef}
-            onMouseEnter={() => setOpenDropdown('about-us')}
-            onMouseLeave={() => setOpenDropdown(null)}
-          >
-            <button
-              type="button"
-              className="app-header-nav-link app-header-dropdown-trigger"
-              onClick={() => setOpenDropdown((v) => (v === 'about-us' ? null : 'about-us'))}
-              aria-expanded={openDropdown === 'about-us'}
-              aria-haspopup="true"
-            >
-              About Us
-              <span className="app-header-chevron" aria-hidden>▼</span>
-            </button>
-            <div
-              className="app-header-dropdown-panel"
-              aria-hidden={openDropdown !== 'about-us'}
-            >
-              {ABOUT_US_LINKS.map(({ label, href }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="app-header-dropdown-link"
-                  onClick={() => setOpenDropdown(null)}
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-          </div> */}
-          <Link href="/our-mission" className="app-header-nav-link">
-            Our Mission
+          <Link href="/about-us" className="app-header-nav-link">
+            About-Us
           </Link>
           <Link href="/team" className="app-header-nav-link">
             Team
@@ -279,9 +157,66 @@ export default function Header() {
           </Link>
         </nav>
 
+        {/* Hamburger – mobile only */}
+        <button
+          type="button"
+          className="app-header-hamburger"
+          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileMenuOpen}
+          onClick={() => setMobileMenuOpen((v) => !v)}
+        >
+          <span className={`app-header-hamburger-icon${mobileMenuOpen ? ' open' : ''}`}>
+            <span />
+            <span />
+            <span />
+          </span>
+        </button>
+
         <div className="app-header-right" />
         </div>
       </header>
+
+      {/* Backdrop */}
+      {mobileMenuOpen && (
+        <div
+          className="app-mobile-backdrop"
+          aria-hidden
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Side drawer – fixed, outside header so body doesn't shift */}
+      <nav
+        className={`app-header-mobile-nav${mobileMenuOpen ? ' open' : ''}`}
+        aria-label="Mobile navigation"
+        aria-hidden={!mobileMenuOpen}
+      >
+        <div className="app-mobile-drawer-header">
+          <span className="app-mobile-drawer-title">Menu</span>
+          <button
+            type="button"
+            className="app-mobile-close"
+            aria-label="Close menu"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        {NAV_LINKS.map(({ label, href }) => (
+          <Link
+            key={href}
+            href={href}
+            className="app-header-mobile-link"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            {label}
+          </Link>
+        ))}
+      </nav>
 
       {announcementEvent && (
         <Link

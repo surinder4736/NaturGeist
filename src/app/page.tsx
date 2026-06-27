@@ -1,49 +1,94 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { UpcomingEventRecord } from '@/lib/upcoming-events/types';
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { UpcomingEventRecord } from "@/lib/upcoming-events/types";
+
+const FOCUS_AREAS = [
+  {
+    title: "Environmental Sustainability",
+    description:
+      "Promoting ecological awareness, climate resilience, sustainable resource management, and community-led environmental action.",
+    image: "/images/image2.png",
+  },
+  {
+    title: "Livelihoods & Economic Empowerment",
+    description:
+      "Supporting communities in building resilient, dignified, and sustainable livelihood opportunities that respect human dignity.",
+    image: "/images/image3.png",
+  },
+  {
+    title: "Gender Equity & Inclusion",
+    description:
+      "Advancing gender-equitable approaches across all programme areas and within organisational practice.",
+    image: "/images/image4.png",
+  },
+  {
+    title: "Mental Well-being",
+    description:
+      "Addressing psychosocial dimensions of development by integrating mental health awareness and community support.",
+    image: "/images/image5.png",
+  },
+];
 
 const PURPOSE_ITEMS = [
-  'Environmental stress and climate vulnerability',
-  'Livelihood insecurity and informal labour conditions',
-  'Gendered inequalities and exclusion',
-  'Emotional distress and psychosocial strain',
+  "Environmental stress and climate vulnerability",
+  "Livelihood insecurity and informal labour conditions",
+  "Gendered inequalities and exclusion",
+  "Emotional distress and psychosocial strain",
 ];
 
 const HOW_WE_WORK = [
-  'Community-led: Working with communities, not for them',
-  'Dignity-centred: Moving beyond charity towards agency and respect',
-  'Integrated approach: Addressing people and planet together',
-  'Knowledge-informed: Bridging research, practice, and lived experience',
-  'Collaborative: Partnering with civil society, academia, and practitioners',
-  'Long-term commitment: Valuing continuity over quick outcomes',
+  { label: "Community-led", detail: "Working with communities, not for them" },
+  { label: "Dignity-centred", detail: "Moving beyond charity towards agency and respect" },
+  { label: "Integrated approach", detail: "Addressing people and planet together" },
+  { label: "Knowledge-informed", detail: "Bridging research, practice, and lived experience" },
+  { label: "Collaborative", detail: "Partnering with civil society, academia, and practitioners" },
+  { label: "Long-term commitment", detail: "Valuing continuity over quick outcomes" },
 ];
 
 const COLLABORATION_ITEMS = [
-  'Academic institutions',
-  'Civil society organisations',
-  'Community groups',
-  'Researchers and practitioners',
-  'Public bodies and networks',
+  "Academic institutions",
+  "Civil society organisations",
+  "Community groups",
+  "Researchers and practitioners",
+  "Public bodies and networks",
 ];
 
 const COMMUNITY_NATURE_IMAGES = [
-  { src: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=500&h=400&fit=crop', alt: 'Community tree planting and reforestation', caption: 'Tree planting & reforestation' },
-  { src: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=500&h=400&fit=crop', alt: 'Community by river and harvest', caption: 'Community by river' },
-  { src: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=500&h=400&fit=crop', alt: 'Communal harvesting and farming', caption: 'Communal harvesting' },
-  { src: '/images/project/IMG-20260227-WA0013.jpg', alt: 'Community appreciating nature at sunset', caption: 'Nature & togetherness' },
+  {
+    src: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=500&h=400&fit=crop",
+    alt: "Community tree planting and reforestation",
+    caption: "Tree planting & reforestation",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=500&h=400&fit=crop",
+    alt: "Community by river and harvest",
+    caption: "Community by river",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=500&h=400&fit=crop",
+    alt: "Communal harvesting and farming",
+    caption: "Communal harvesting",
+  },
+  {
+    src: "/images/project/IMG-20260227-WA0013.jpg",
+    alt: "Community appreciating nature at sunset",
+    caption: "Nature & togetherness",
+  },
 ];
 
 function getDay(value: string) {
-  return new Date(value).toLocaleDateString('en-IN', { day: '2-digit' });
+  return new Date(value).toLocaleDateString("en-IN", { day: "2-digit" });
 }
 
 function getMonth(value: string) {
-  return new Date(value).toLocaleDateString('en-IN', { month: 'short' }).toUpperCase();
+  return new Date(value)
+    .toLocaleDateString("en-IN", { month: "short" })
+    .toUpperCase();
 }
 
 export default function HomePage() {
@@ -58,11 +103,11 @@ export default function HomePage() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('lp-visible');
+            entry.target.classList.add("lp-visible");
           }
         });
       },
-      { rootMargin: '0px 0px -40px 0px', threshold: 0.1 }
+      { rootMargin: "0px 0px -40px 0px", threshold: 0.1 },
     );
 
     observers.forEach((el) => io.observe(el));
@@ -72,7 +117,7 @@ export default function HomePage() {
   useEffect(() => {
     async function loadUpcomingEvents() {
       try {
-        const response = await fetch('/api/upcoming-events');
+        const response = await fetch("/api/upcoming-events");
         const payload = await response.json();
         if (!response.ok) return;
         setUpcomingEvents(payload.events || []);
@@ -80,7 +125,6 @@ export default function HomePage() {
         setUpcomingEvents([]);
       }
     }
-
     loadUpcomingEvents();
   }, []);
 
@@ -92,150 +136,107 @@ export default function HomePage() {
     <main className="landing landing-naturgeist">
       <Header />
 
-      {/* Hero – with staggered load animation */}
+      {/* ── Hero ── */}
       <section className="lp-hero">
-        <div className="lp-hero-waves" aria-hidden />
         <div className="lp-hero-bg">
           <Image
-            src="/images/team-group-photo.jpg"
+            src="/images/image1.jpeg"
             alt="NaturGeist team members group photo"
             fill
-            className="lp-hero-bg-img"
             priority
             sizes="100vw"
+            style={{ objectFit: "cover", objectPosition: "center top" }}
           />
-          <span className="lp-hero-bg-overlay" aria-hidden />
         </div>
-        <div className="lp-hero-inner">
-          <h1 className="lp-hero-title lp-hero-anim">
-            <span className="lp-hero-line">NaturGeist</span>
-            <span className="lp-hero-line">Society for</span>
-            <span className="lp-hero-line">People & Planet</span>
+        <div className="lp-hero-overlay" aria-hidden />
+        <div className="lp-hero-content">
+          {/* <p className="lp-hero-tagline">Society for People and Planet</p> */}
+          <h1 className="lp-hero-heading">
+            Where Human Well-being and Environmental Stewardship Meet
           </h1>
-          <p className="lp-hero-tagline lp-hero-anim lp-hero-delay-1">
-            SUSTAINED COLLECTIVE EFFORT FOR WELFARE OF ALL
-          </p>
-          <div className="lp-hero-logo lp-hero-anim lp-hero-delay-2">
-            <Image
-              src="/images/logo.png"
-              alt=""
-              width={160}
-              height={160}
-              unoptimized
-            />
-          </div>
-          <Link href="/our-mission" className="lp-btn lp-btn-primary lp-hero-anim lp-hero-delay-3">
-            Our Mission
-          </Link>
+          {/* <div className="lp-hero-cta-row">
+            <Link href="/our-mission" className="lp-btn lp-btn-primary">
+              Our Mission
+            </Link>
+            <Link href="/join-us" className="lp-btn lp-btn-secondary">
+              Get Involved
+            </Link>
+          </div> */}
         </div>
       </section>
 
-      {/* Who We Are – with image + scroll reveal */}
+      {/* ── Who We Are ── */}
       <section className="lp-join" ref={setRef(0)}>
         <div className="lp-who-waves" aria-hidden />
         <div className="lp-who-grid lp-reveal">
           <div className="lp-who-inner">
-            <h2 className="lp-who-title">WHO WE ARE</h2>
+            <span className="lp-section-label">Who We Are</span>
+            <h2 className="lp-who-title">
+              A Registered Non-Profit Working at the Intersection of People &
+              Planet
+            </h2>
             <div className="lp-who-text">
               <p>
-                NaturGeist Society for People and Planet is a not-for-profit organisation working at the intersection of environmental sustainability, livelihoods, gender equity, and mental well-being.
+                NaturGeist Society for People and Planet is a registered
+                non-profit organisation working at the intersection of
+                environmental sustainability, livelihoods, gender equity, and
+                mental well-being. Established under the Societies Registration
+                Act, 1860, we foster sustainable and inclusive development
+                through community engagement, research, and collaborative
+                action.
               </p>
               <p>
-                It is registered as an All-India Society under the Societies Registration Act, 1860.
-              </p>
-              <p>
-                We believe that care for the planet cannot be separated from care for people and that sustainable development must be dignity-centred, community-led, and emotionally grounded.
-              </p>
-              <p>
-                Registered under the Societies Registration Act, 1860, NaturGeist works with communities, institutions, and practitioners through long-term, ethical engagement.
+                We work with communities, institutions, practitioners, and
+                development stakeholders to create solutions that strengthen
+                both human and ecological resilience — advancing pathways that
+                are environmentally responsible, socially equitable, and
+                emotionally sustainable.
               </p>
             </div>
-          </div>
-          <div className="lp-who-image lp-reveal lp-reveal-right" style={{ display: 'none' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            {/* <img
-              src="https://images.unsplash.com/photo-1511497584788-876760111969?w=500&h=400&fit=crop"
-              alt="Community and people at the heart of our work—care for people and planet"
-              width={600}
-              height={500}
-              className="lp-img"
-              loading="lazy"
-            /> */}
+            <Link href="/our-mission" className="lp-btn lp-btn-primary" style={{ marginTop: "1.5rem", display: "inline-flex" }}>
+              Learn More
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Our Purpose */}
-      <section className="lp-join" ref={setRef(1)}>
-        <div className="lp-purpose-grid lp-reveal">
-          <div className="lp-purpose-inner lp-reveal">
-            <h2 className="lp-purpose-title">OUR PURPOSE</h2>
-            <p className="lp-purpose-intro">Across regions, communities face:</p>
-            <ul className="lp-purpose-list">
-              {PURPOSE_ITEMS.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+      {/* ── Our Focus Areas ── */}
+      <section className="lp-focus-section" ref={setRef(1)}>
+        <div className="lp-focus-inner">
+          <div className="lp-focus-header lp-reveal">
+            <span className="lp-section-label" style={{ color: "var(--lp-light-on-dark, #d4e8d4)" }}>
+              What We Address
+            </span>
+            <h2 className="lp-focus-title">Our Focus Areas</h2>
           </div>
-          <div className="lp-purpose-inner lp-reveal">
-          <h2 className="lp-purpose-title">OUR GUIDING ETHOS</h2>
-          <p className="lp-ethos-sanskrit" lang="sa">सर्वहिताय साधनम्</p>
-          <p className="lp-ethos-text">
-            An instrument of sustained effort for the welfare of all. This principle reflects our belief that meaningful social and ecological change requires care, perseverance, and collective responsibility.
-          </p>
-        </div>
-        </div>
-
-      </section>
-      {/* Community & Nature – 2x2 image grid */}
-      <section className="lp-community" ref={setRef(3)} style={{ display: 'none' }}>
-        <div className="lp-community-inner">
-          <h2 className="lp-community-title lp-reveal">Community & Nature</h2>
-          <p className="lp-community-subtitle lp-reveal">Environmental stewardship, community engagement, and care for people and planet.</p>
-          <div className="lp-community-grid">
-            {COMMUNITY_NATURE_IMAGES.map((item, i) => (
-              <div key={item.src} className={`lp-community-card lp-reveal lp-reveal-delay-${i}`}>
-                <div className="lp-community-card-img">
+          <div className="lp-focus-grid">
+            {FOCUS_AREAS.map((area, i) => (
+              <div
+                key={area.title}
+                className={`lp-focus-card lp-reveal lp-reveal-delay-${i}`}
+              >
+                <div className="lp-focus-card-img">
                   <Image
-                    src={item.src}
-                    alt={item.alt}
-                    width={500}
-                    height={400}
+                    src={area.image}
+                    alt={area.title}
+                    fill
+                    sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 25vw"
                     className="lp-img"
                   />
+                  <div className="lp-focus-card-overlay" aria-hidden />
                 </div>
-                <p className="lp-community-caption">{item.caption}</p>
+                <div className="lp-focus-card-body">
+                  <h3 className="lp-focus-card-title">{area.title}</h3>
+                  <p className="lp-focus-card-text">{area.description}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* How We Work – with image */}
-      <section className="lp-how" ref={setRef(4)} style={{ display: 'none' }}>
-        <div className="lp-how-grid">
-          <div className="lp-how-image lp-reveal">
-            <Image
-              src="/images/project/sustainable.jpg"
-              alt="Community collaboration"
-              width={600}
-              height={450}
-              className="lp-img"
-            />
-          </div>
-          <div className="lp-how-inner lp-reveal lp-reveal-right">
-            <h2 className="lp-how-title">HOW WE WORK:</h2>
-            <ul className="lp-how-list">
-              {HOW_WE_WORK.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Upcoming Events */}
-      <section className="lp-events-new" id="upcoming-events" ref={setRef(3)}>
+      {/* ── Upcoming Events ── */}
+      <section className="lp-events-new" id="upcoming-events" ref={setRef(5)}>
         <div className="lp-events-new-bg" aria-hidden="true">
           <div className="lp-events-leaf lp-events-leaf-1" />
           <div className="lp-events-leaf lp-events-leaf-2" />
@@ -254,13 +255,14 @@ export default function HomePage() {
               Upcoming Event
             </span>
             <h2 className="lp-events-new-title">Join Our Next Workshop</h2>
-            <p className="lp-events-new-subtitle">Be part of our community initiatives and make a difference together</p>
+            <p className="lp-events-new-subtitle">
+              Be part of our community initiatives and make a difference together
+            </p>
           </div>
-          
+
           {upcomingEvents.map((event) => (
             <div key={event.id} className="lp-event-showcase lp-reveal">
               <div className="lp-event-showcase-grid">
-                {/* Left: Event Flyer Image */}
                 <div className="lp-event-flyer">
                   <div className="lp-event-flyer-wrapper">
                     <img
@@ -273,19 +275,17 @@ export default function HomePage() {
                     <div className="lp-event-flyer-glow" aria-hidden="true" />
                   </div>
                 </div>
-                
-                {/* Right: Event Details */}
+
                 <div className="lp-event-details">
                   <div className="lp-event-date-card">
                     <div className="lp-event-date-day">{getDay(event.date)}</div>
                     <div className="lp-event-date-month">{getMonth(event.date)}</div>
                     <div className="lp-event-date-year">{new Date(event.date).getFullYear()}</div>
                   </div>
-                  
+
                   <h3 className="lp-event-title">{event.title}</h3>
-                  
                   <p className="lp-event-description">{event.description}</p>
-                  
+
                   <div className="lp-event-info-grid">
                     <div className="lp-event-info-item">
                       <div className="lp-event-info-icon">
@@ -333,17 +333,15 @@ export default function HomePage() {
                       </div>
                     </div>
                   )}
-                  
+
                   <div className="lp-event-cta">
                     <Link
-                      href={event.actionLink || '#'}
-                      target={event.actionLink ? '_blank' : undefined}
-                      rel={event.actionLink ? 'noopener noreferrer' : undefined}
+                      href={event.actionLink || "#"}
+                      target={event.actionLink ? "_blank" : undefined}
+                      rel={event.actionLink ? "noopener noreferrer" : undefined}
                       className="lp-btn lp-btn-primary lp-btn-lg"
                       aria-disabled={!event.actionLink}
-                      onClick={(e) => {
-                        if (!event.actionLink) e.preventDefault();
-                      }}
+                      onClick={(e) => { if (!event.actionLink) e.preventDefault(); }}
                     >
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -358,92 +356,14 @@ export default function HomePage() {
               </div>
             </div>
           ))}
+
           {upcomingEvents.length === 0 && (
-            <div className="lp-event-empty lp-reveal">No upcoming events are scheduled right now.</div>
+            <div className="lp-event-empty lp-reveal">
+              No upcoming events are scheduled right now. Check back soon.
+            </div>
           )}
         </div>
       </section>
-
-      {/* Collaboration & Partnerships + Transparency & Ethics – one attractive block */}
-      <section className="lp-trust-block" ref={setRef(5)} style={{ display: 'none' }}>
-        <div className="lp-trust-inner">
-          <div className="lp-collab-card lp-reveal">
-            <span className="lp-collab-accent" aria-hidden />
-            <h2 className="lp-collab-title">COLLABORATION & PARTNERSHIPS</h2>
-            <p className="lp-collab-intro">We collaborate with:</p>
-            <ul className="lp-collab-list">
-              {COLLABORATION_ITEMS.map((item) => (
-                <li key={item}><span className="lp-collab-bullet" aria-hidden /><span>{item}</span></li>
-              ))}
-            </ul>
-            <p className="lp-collab-close">
-              We value shared learning, ethical practice, and mutual respect.
-            </p>
-          </div>
-
-          <div className="lp-transparency-row">
-            <div className="lp-transparency-card lp-reveal">
-              <h2 className="lp-transparency-title">TRANSPARENCY & ETHICS</h2>
-              <p className="lp-transparency-text">
-                NaturGeist Society for People and Planet is a not-for-profit organisation. All resources are used solely to advance the Society&apos;s aims and objectives. No member has any personal claim over the Society&apos;s assets or income. We are committed to transparency, accountability, and ethical governance.
-              </p>
-            </div>
-            <div className="lp-transparency-image-wrap lp-reveal lp-reveal-right">
-              <div className="lp-transparency-image">
-                <Image
-                  src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=500&h=380&fit=crop"
-                  alt="Community engagement and volunteer spirit"
-                  width={500}
-                  height={380}
-                  className="lp-img"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Join Us – theme matched with lp-* UI */}
-      {/* Join Us – theme matched with lp-* UI */}
-      <section className="lp-join">
-        <div className="lp-join-inner">
-          <div className="lp-join-content">
-            <p className="lp-join-badge">Get Involved</p>
-            <h2 className="lp-join-title">
-              Join Us as a Volunteer or Donor
-            </h2>
-            <p className="lp-join-text">
-              Your time, skills, and support can help strengthen communities
-              and care for both people and planet. Become part of our
-              long-term, dignity-centred work.
-            </p>
-            <Link href="/join-us" className="lp-btn lp-btn-primary">
-              Join Us
-            </Link>
-          </div>
-
-          {/* <div className="lp-join-actions">
-            <Link href="/join-us" className="lp-btn lp-btn-primary">
-              Join Us
-            </Link>
-            <Link href="/contribute" className="lp-btn lp-btn-secondary">
-              Support Our Work
-            </Link>
-          </div> */}
-        </div>
-      </section>
-
-      {/* CTA strip */}
-      {/* <section className="lp-join" ref={setRef(6)} style={{display: 'none'}}>
-        <div className="lp-cta-inner lp-reveal">
-          <p className="lp-cta-text">Care • Perseverance • People & Planet</p>
-          <div className="lp-cta-buttons">
-            <Link href="/our-mission" className="lp-btn lp-btn-primary">Our Mission</Link>
-            <Link href="/contact" className="lp-btn lp-btn-primary">Contact Us</Link>
-            <Link href="/contribute" className="lp-btn lp-btn-primary">Contribute</Link>
-          </div>
-        </div>
-      </section> */}
 
       <Footer />
     </main>
