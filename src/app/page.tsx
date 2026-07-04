@@ -137,32 +137,16 @@ export default function HomePage() {
       <Header />
 
       {/* ── Hero ── */}
-      <section className="lp-hero">
-        <div className="lp-hero-bg">
-          <Image
-            src="/images/image1.jpeg"
-            alt="NaturGeist team members group photo"
-            fill
-            priority
-            sizes="100vw"
-            style={{ objectFit: "cover", objectPosition: "center top" }}
-          />
-        </div>
-        <div className="lp-hero-overlay" aria-hidden />
-        <div className="lp-hero-content">
-          {/* <p className="lp-hero-tagline">Society for People and Planet</p> */}
-          <h1 className="lp-hero-heading">
-            Where Human Well-being and Environmental Stewardship Meet
-          </h1>
-          {/* <div className="lp-hero-cta-row">
-            <Link href="/our-mission" className="lp-btn lp-btn-primary">
-              Our Mission
-            </Link>
-            <Link href="/join-us" className="lp-btn lp-btn-secondary">
-              Get Involved
-            </Link>
-          </div> */}
-        </div>
+      <section className="lp-hero-banner">
+        <Image
+          src="/images/image1.jpeg"
+          alt="NaturGeist Society for People and Planet"
+          width={1600}
+          height={640}
+          priority
+          sizes="100vw"
+          className="lp-hero-banner-img"
+        />
       </section>
 
       {/* ── Who We Are ── */}

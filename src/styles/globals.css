@@ -6093,6 +6093,18 @@ a {
   opacity: 0.85;
 }
 
+/* Hero – full banner image, uncropped and responsive */
+.lp-hero-banner {
+  width: 100%;
+  line-height: 0;
+}
+
+.lp-hero-banner-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 /* Hero – overlay + centred content */
 .lp-hero-overlay {
   position: absolute;

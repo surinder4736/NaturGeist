@@ -9,7 +9,7 @@ const GOVERNING_BODY = [
     name: 'Dr. Vikash Kumar Thakur (PhD)',
     description: '',
     location: '-',
-    image: '/images/team/vikash-kumar-thakur.jpg',
+    image: '/images/team/vikash-kumar-thakur.png',
   },
   {
     role: 'Vice President',
@@ -60,7 +60,7 @@ const IT_DEPARTMENT = [
     role: 'IT Head',
     description: 'Full Stack Developer & Technical Lead',
     location: '-',
-    image: '/images/team/surinder-512.jpg',
+    image: '/images/team/surinder-kumar.png',
   },
   // {
   //   name: 'Mr. Rahul Sharma',
