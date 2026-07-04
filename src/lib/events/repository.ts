@@ -1,32 +1,29 @@
-import { mkdir, readFile, writeFile } from 'fs/promises';
-import path from 'path';
-import { EventRecord, EventsDataFile } from './types';
+import { deleteJson, listJsonByPrefix, readJson, uploadJson } from '@/lib/cloud-store/json-store';
+import { EventRecord } from './types';
 
-const dataDir = path.join(process.cwd(), 'data');
-const eventsFilePath = path.join(dataDir, 'events.json');
+const PREFIX = 'naturgeist/data/events/';
 
-async function ensureEventsFile() {
-  await mkdir(dataDir, { recursive: true });
-
-  try {
-    await readFile(eventsFilePath, 'utf-8');
-  } catch {
-    const initial: EventsDataFile = { events: [] };
-    await writeFile(eventsFilePath, JSON.stringify(initial, null, 2), 'utf-8');
-  }
+function eventPublicId(eventId: string) {
+  return `${PREFIX}${eventId}`;
 }
 
 export async function readEvents(): Promise<EventRecord[]> {
-  await ensureEventsFile();
-  const raw = await readFile(eventsFilePath, 'utf-8');
-  const parsed = JSON.parse(raw) as EventsDataFile;
-  const events = parsed.events ?? [];
-
-  return events.sort((a, b) => b.date.localeCompare(a.date));
+  const items = await listJsonByPrefix<EventRecord>(PREFIX);
+  return items.map((item) => item.data).sort((a, b) => b.date.localeCompare(a.date));
 }
 
-export async function writeEvents(events: EventRecord[]) {
-  await ensureEventsFile();
-  const payload: EventsDataFile = { events };
-  await writeFile(eventsFilePath, JSON.stringify(payload, null, 2), 'utf-8');
+export async function readEvent(eventId: string): Promise<EventRecord | null> {
+  return readJson<EventRecord | null>(eventPublicId(eventId), null);
+}
+
+export async function createEvent(event: EventRecord): Promise<void> {
+  await uploadJson(eventPublicId(event.id), event);
+}
+
+export async function updateEvent(event: EventRecord): Promise<void> {
+  await uploadJson(eventPublicId(event.id), event);
+}
+
+export async function deleteEvent(eventId: string): Promise<void> {
+  await deleteJson(eventPublicId(eventId));
 }

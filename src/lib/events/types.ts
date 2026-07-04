@@ -19,7 +19,3 @@ export interface EventRecord {
   createdAt: string;
   updatedAt: string;
 }
-
-export interface EventsDataFile {
-  events: EventRecord[];
-}

@@ -6,22 +6,22 @@ import Image from 'next/image';
 const GOVERNING_BODY = [
   {
     role: 'President',
-    name: 'Dr. Vikash Kumar Thakur',
-    description: 'Early Career Researcher',
+    name: 'Dr. Vikash Kumar Thakur (PhD)',
+    description: '',
     location: '-',
     image: '/images/team/vikash-kumar-thakur.jpg',
   },
   {
     role: 'Vice President',
     name: 'Ms. Subha Dogra',
-    description: 'Gender Expert (South Asia) | Programme Monitoring & Evaluation',
+    description: 'Gender Expert (South Asia)',
     location: '-',
     image: '/images/team/subha-dogra.jpg',
   },
   {
     role: 'Secretary',
     name: 'Ms. Sameeksha Shukla',
-    description: 'Research Scholar, Mental Health Expert',
+    description: 'Psychologist',
     location: '-',
     image: '/images/team/sameeksha-shukla.jpg',
   },
@@ -35,8 +35,8 @@ const GOVERNING_BODY = [
 ] as const;
 
 const EXECUTIVE_MEMBERS = [
-  { name: 'Mr. Abhishek Kumar', 
-    description: 'Output Head - Communication', 
+  { name: 'Mr. Abhishek Kumar',
+    description: 'Communication',
     location: '-' ,
     image: '/images/team/abhishek-kumar.jpg',
   },
@@ -46,10 +46,10 @@ const EXECUTIVE_MEMBERS = [
   { name: 'Ms. Jyoti Puri', description: 'Banking & Finance Professional', location: '-',
     image: '/images/team/jyoti-puri.jpg',
    },
-  { name: 'Mr. Santosh Kumar Singh', description: 'Finance Consultant', location: '-',
+  { name: 'Mr. Santosh Kumar Singh', description: 'Chartered Accountant', location: '-',
     image: '/images/team/santosh-kumar-singh.jpg',
    },
-  { name: 'Ms. Minakshi Saini', description: 'Senior International Volleyball Coach', location: '-',
+  { name: 'Ms. Minakshi Saini', description: 'Volleyball Coach', location: '-',
     image: '/images/team/minakshi-saini.jpg',
    },
 ] as const;
@@ -108,7 +108,7 @@ export default function TeamPage() {
                 <TeamImage src={person.image} alt={person.name} id={person.role} />
                 <span className="team-card-badge">{person.role}</span>
                 <h3 className="team-card-name">{person.name}</h3>
-                <p className="team-card-role">{person.description}</p>
+                {person.description && <p className="team-card-role">{person.description}</p>}
               </div>
             ))}
           </div>

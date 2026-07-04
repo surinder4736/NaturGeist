@@ -1,6 +1,15 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  CalendarDays,
+  ChevronLeft,
+  ChevronRight,
+  Image as ImageIcon,
+  Sparkles,
+  Video,
+  X,
+} from 'lucide-react';
 import { EventRecord } from '@/lib/events/types';
 
 function formatDate(value: string) {
@@ -127,7 +136,9 @@ export default function EventsPage() {
         <div className="events-page-wrap">
           <div className="events-hero-card">
             <div className="events-hero-copy">
-              <p className="events-kicker">NaturGeist Event Archive</p>
+              <p className="events-kicker">
+                <Sparkles size={13} /> NaturGeist Event Archive
+              </p>
               <h1 className="events-title">Stories, Moments, and Impact</h1>
               <p className="events-subtitle">
                 Explore all previous events with photos and videos organized by event date.
@@ -136,10 +147,12 @@ export default function EventsPage() {
 
             <div className="events-stats">
               <div className="events-stat-card">
+                <CalendarDays size={16} className="events-stat-icon" />
                 <span className="events-stat-value">{totalEventCount}</span>
                 <span className="events-stat-label">Events</span>
               </div>
               <div className="events-stat-card">
+                <ImageIcon size={16} className="events-stat-icon" />
                 <span className="events-stat-value">{totalMediaCount}</span>
                 <span className="events-stat-label">Media Items</span>
               </div>
@@ -191,7 +204,8 @@ export default function EventsPage() {
           {loading && <p className="events-message events-state-card">Loading events...</p>}
           {error && <p className="events-message events-error events-state-card">{error}</p>}
           {!loading && !error && filteredEvents.length === 0 && (
-            <p className="events-message events-state-card">
+            <p className="events-message events-state-card events-empty-state">
+              <CalendarDays size={18} />
               No events found for the selected date.
             </p>
           )}
@@ -208,8 +222,12 @@ export default function EventsPage() {
                     <p>{formatDate(event.date)}</p>
                   </div>
                   <div className="event-block-meta">
-                    <span>{images.length} Images</span>
-                    <span>{videos.length} Videos</span>
+                    <span>
+                      <ImageIcon size={12} /> {images.length} Images
+                    </span>
+                    <span>
+                      <Video size={12} /> {videos.length} Videos
+                    </span>
                   </div>
                 </header>
 
@@ -284,7 +302,7 @@ export default function EventsPage() {
               onClick={closeLightbox}
               aria-label="Close image preview"
             >
-              ×
+              <X size={18} />
             </button>
 
             {lightbox.images.length > 1 && (
@@ -294,7 +312,7 @@ export default function EventsPage() {
                 onClick={goPrev}
                 aria-label="View previous image"
               >
-                ‹
+                <ChevronLeft size={22} />
               </button>
             )}
 
@@ -321,7 +339,7 @@ export default function EventsPage() {
                 onClick={goNext}
                 aria-label="View next image"
               >
-                ›
+                <ChevronRight size={22} />
               </button>
             )}
           </div>

@@ -47,6 +47,7 @@ const ABOUT_US_LINKS = [
 
 const NAV_LINKS = [
   { label: 'About Us', href: '/about-us' },
+  { label: 'Our Approach', href: '/our-approach' },
   { label: 'Team', href: '/team' },
   { label: 'Join Us', href: '/join-us' },
   { label: 'Events', href: '/events' },
@@ -136,6 +137,9 @@ export default function Header() {
         <nav className="app-header-nav">
           <Link href="/about-us" className="app-header-nav-link">
             About-Us
+          </Link>
+          <Link href="/our-approach" className="app-header-nav-link">
+            Our Approach
           </Link>
           <Link href="/team" className="app-header-nav-link">
             Team

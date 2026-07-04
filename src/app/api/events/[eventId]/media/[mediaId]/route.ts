@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdminRequest } from '@/lib/auth/admin';
-import { readEvents, writeEvents } from '@/lib/events/repository';
+import { readEvent, updateEvent } from '@/lib/events/repository';
 import { deleteEventMedia } from '@/lib/events/storage';
 
 export async function DELETE(
@@ -12,19 +12,17 @@ export async function DELETE(
   }
 
   try {
-    const events = await readEvents();
-    const eventIndex = events.findIndex((event) => event.id === params.eventId);
-    if (eventIndex === -1) {
+    const event = await readEvent(params.eventId);
+    if (!event) {
       return NextResponse.json({ error: 'Event not found' }, { status: 404 });
     }
 
-    const event = events[eventIndex];
     const media = event.media.find((item) => item.id === params.mediaId);
     if (!media) {
       return NextResponse.json({ error: 'Media not found' }, { status: 404 });
     }
 
-    await deleteEventMedia(media.storagePath);
+    await deleteEventMedia(media.storagePath, media.type);
 
     const updatedEvent = {
       ...event,
@@ -32,8 +30,7 @@ export async function DELETE(
       updatedAt: new Date().toISOString(),
     };
 
-    events[eventIndex] = updatedEvent;
-    await writeEvents(events);
+    await updateEvent(updatedEvent);
 
     return NextResponse.json({ event: updatedEvent });
   } catch (error) {

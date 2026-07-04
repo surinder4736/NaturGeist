@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { isAdminRequest } from '@/lib/auth/admin';
-import { readEvents, writeEvents } from '@/lib/events/repository';
+import { createEvent, readEvents } from '@/lib/events/repository';
 import { uploadEventMedia } from '@/lib/events/storage';
 import { detectMediaType, validateMediaFile } from '@/lib/events/validation';
 import { EventRecord } from '@/lib/events/types';
@@ -56,7 +56,6 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const events = await readEvents();
     const now = new Date().toISOString();
     const eventId = randomUUID();
     const media = [];
@@ -87,8 +86,7 @@ export async function POST(request: NextRequest) {
       updatedAt: now,
     };
 
-    const nextEvents = [createdEvent, ...events];
-    await writeEvents(nextEvents);
+    await createEvent(createdEvent);
 
     return NextResponse.json({ event: createdEvent }, { status: 201 });
   } catch (error) {

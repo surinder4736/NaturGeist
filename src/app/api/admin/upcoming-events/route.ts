@@ -131,6 +131,7 @@ export async function POST(request: NextRequest) {
     await writeUpcomingEvents([...events, newEvent]);
     return NextResponse.json({ event: newEvent }, { status: 201 });
   } catch (error) {
+    console.log(error);
     const message = error instanceof Error ? error.message : 'Failed to create event';
     return NextResponse.json({ error: message }, { status: 500 });
   }

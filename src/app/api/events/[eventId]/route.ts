@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { isAdminRequest } from '@/lib/auth/admin';
-import { readEvents, writeEvents } from '@/lib/events/repository';
+import { deleteEvent, readEvent, updateEvent } from '@/lib/events/repository';
 import { deleteEventMedia, uploadEventMedia } from '@/lib/events/storage';
 import { detectMediaType, validateMediaFile } from '@/lib/events/validation';
 
@@ -43,13 +43,11 @@ export async function PUT(
       }
     }
 
-    const events = await readEvents();
-    const targetIndex = events.findIndex((event) => event.id === params.eventId);
-    if (targetIndex === -1) {
+    const event = await readEvent(params.eventId);
+    if (!event) {
       return NextResponse.json({ error: 'Event not found' }, { status: 404 });
     }
 
-    const event = events[targetIndex];
     const now = new Date().toISOString();
     const newMedia = [];
 
@@ -77,11 +75,11 @@ export async function PUT(
       updatedAt: now,
     };
 
-    events[targetIndex] = updatedEvent;
-    await writeEvents(events);
+    await updateEvent(updatedEvent);
 
     return NextResponse.json({ event: updatedEvent });
   } catch (error) {
+    console.log(error);
     const message = error instanceof Error ? error.message : 'Failed to update event';
     return NextResponse.json({ error: message }, { status: 500 });
   }
@@ -96,18 +94,16 @@ export async function DELETE(
   }
 
   try {
-    const events = await readEvents();
-    const target = events.find((event) => event.id === params.eventId);
+    const target = await readEvent(params.eventId);
     if (!target) {
       return NextResponse.json({ error: 'Event not found' }, { status: 404 });
     }
 
     for (const mediaItem of target.media) {
-      await deleteEventMedia(mediaItem.storagePath);
+      await deleteEventMedia(mediaItem.storagePath, mediaItem.type);
     }
 
-    const filtered = events.filter((event) => event.id !== params.eventId);
-    await writeEvents(filtered);
+    await deleteEvent(params.eventId);
 
     return NextResponse.json({ ok: true });
   } catch (error) {

@@ -1,6 +1,18 @@
 'use client';
 
 import { FormEvent, useEffect, useMemo, useState } from 'react';
+import {
+  AlertCircle,
+  Calendar,
+  CheckCircle2,
+  Image as ImageIcon,
+  Loader2,
+  Pencil,
+  Trash2,
+  UploadCloud,
+  Video,
+  X,
+} from 'lucide-react';
 import { EventRecord } from '@/lib/events/types';
 import { MAX_IMAGE_SIZE_BYTES, MAX_VIDEO_SIZE_BYTES } from '@/lib/events/constants';
 
@@ -79,6 +91,7 @@ export default function AdminEventsPage() {
   const [date, setDate] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [fileInputKey, setFileInputKey] = useState(0);
+  const [dragActive, setDragActive] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
 
   const [progress, setProgress] = useState(0);
@@ -89,6 +102,20 @@ export default function AdminEventsPage() {
     () => events.find((event) => event.id === editId) || null,
     [events, editId],
   );
+
+  const totalMediaCount = useMemo(
+    () => events.reduce((acc, event) => acc + event.media.length, 0),
+    [events],
+  );
+
+  function handleFiles(incoming: FileList | null) {
+    if (!incoming || incoming.length === 0) return;
+    setFiles((prev) => [...prev, ...Array.from(incoming)]);
+  }
+
+  function removeFile(index: number) {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  }
 
   async function loadEvents() {
     const response = await fetch('/api/events');
@@ -227,125 +254,222 @@ export default function AdminEventsPage() {
   }
 
   return (
-    <main className="admin-events-page">
-      <div className="admin-events-wrap">
-        <header className="admin-events-header">
-          <h1>Events Management</h1>
-          <p>Create, update, and manage event media.</p>
+    <main className="ea-admin-page">
+      <div className="ea-admin-shell">
+        <header className="ea-admin-topbar">
+          <div>
+            <span className="ea-admin-eyebrow">Admin</span>
+            <h1>Events Gallery</h1>
+            <p>Upload event photos &amp; videos — everything is hosted on Cloudinary.</p>
+          </div>
+          <div className="ea-admin-stats">
+            <div className="ea-stat">
+              <strong>{events.length}</strong>
+              <span>Events</span>
+            </div>
+            <div className="ea-stat">
+              <strong>{totalMediaCount}</strong>
+              <span>Media files</span>
+            </div>
+          </div>
         </header>
 
-        <section className="admin-card">
-          <h2>{editId ? 'Edit Event' : 'Create Event'}</h2>
-          <form onSubmit={handleSubmit} className="admin-events-form">
-            <label>
-              Event Title
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Event title"
-                required
-              />
-            </label>
-            <label>
-              Event Date
-              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-            </label>
-            <label>
-              Upload Images/Videos
-              <input
-                key={fileInputKey}
-                type="file"
-                accept="image/*,video/mp4,video/webm,video/ogg,video/quicktime"
-                multiple
-                onChange={(e) => setFiles(Array.from(e.target.files || []))}
-              />
-            </label>
+        {(error || success) && (
+          <div className={`ea-banner ${error ? 'is-error' : 'is-success'}`} role="status">
+            {error ? <AlertCircle size={16} /> : <CheckCircle2 size={16} />}
+            <span>{error || success}</span>
+          </div>
+        )}
 
-            {files.length > 0 && (
-              <ul className="admin-file-list">
-                {files.map((file) => (
-                  <li key={`${file.name}-${file.size}`}>
-                    {file.name} ({Math.ceil(file.size / 1024)} KB)
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            {loading && progress > 0 && (
-              <div className="admin-progress">
-                <div style={{ width: `${progress}%` }} />
+        <div className="ea-admin-grid">
+          <section className="ea-card ea-form-card">
+            <div className="ea-card-header">
+              <div>
+                <h2>{editId ? 'Edit Event' : 'Create Event'}</h2>
+                {editingEvent && <p className="ea-card-subtitle">Editing &ldquo;{editingEvent.title}&rdquo;</p>}
               </div>
-            )}
-
-            <div className="admin-form-actions">
-              <button type="submit" disabled={loading}>
-                {loading ? 'Saving...' : editId ? 'Update Event' : 'Create Event'}
-              </button>
               {editId && (
-                <button type="button" className="secondary" onClick={resetForm} disabled={loading}>
-                  Cancel Edit
+                <button type="button" className="ea-chip-btn" onClick={resetForm}>
+                  <X size={14} /> Cancel edit
                 </button>
               )}
             </div>
-          </form>
 
-          {error && <p className="admin-state admin-error">{error}</p>}
-          {success && <p className="admin-state admin-success">{success}</p>}
-        </section>
+            <form onSubmit={handleSubmit} className="ea-form">
+              <fieldset className="ea-fieldset">
+                <div className="ea-fieldset-title">Event details</div>
+                <div className="ea-field">
+                  <label htmlFor="ea-title">Event title</label>
+                  <input
+                    id="ea-title"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="e.g. Beach Cleanup Drive"
+                    required
+                  />
+                </div>
+                <div className="ea-field">
+                  <label htmlFor="ea-date">
+                    <Calendar size={14} /> Event date
+                  </label>
+                  <input id="ea-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+                </div>
+              </fieldset>
 
-        <section className="admin-card">
-          <h2>Existing Events</h2>
-          <div className="admin-events-list">
-            {events.length === 0 && <p>No events created yet.</p>}
-            {events.map((eventItem) => (
-              <article key={eventItem.id} className="admin-event-item">
-                <header>
-                  <div>
-                    <h3>{eventItem.title}</h3>
-                    <p>{formatDate(eventItem.date)}</p>
+              <fieldset className="ea-fieldset">
+                <div className="ea-fieldset-title">Media upload</div>
+                <label
+                  className={`ea-dropzone ${dragActive ? 'is-dragging' : ''}`}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setDragActive(true);
+                  }}
+                  onDragLeave={() => setDragActive(false)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setDragActive(false);
+                    handleFiles(e.dataTransfer.files);
+                  }}
+                >
+                  <input
+                    key={fileInputKey}
+                    type="file"
+                    accept="image/*,video/mp4,video/webm,video/ogg,video/quicktime"
+                    multiple
+                    onChange={(e) => {
+                      handleFiles(e.target.files);
+                      setFileInputKey((v) => v + 1);
+                    }}
+                    hidden
+                  />
+                  <div className="ea-dropzone-placeholder">
+                    <UploadCloud size={22} />
+                    <span>Click or drag images/videos to upload</span>
+                    <span className="ea-dropzone-hint">Images up to 8MB · Videos up to 120MB</span>
                   </div>
-                  <div className="admin-item-actions">
-                    <button type="button" className="secondary" onClick={() => startEdit(eventItem)}>
-                      Edit
-                    </button>
-                    <button type="button" className="danger" onClick={() => deleteEvent(eventItem.id)}>
-                      Delete
-                    </button>
-                  </div>
-                </header>
+                </label>
 
-                <div className="admin-media-grid">
-                  {eventItem.media.map((media) => (
-                    <div key={media.id} className="admin-media-card">
-                      {media.type === 'image' ? (
-                        <img src={media.url} alt={media.fileName} loading="lazy" />
-                      ) : (
-                        <video src={media.url} controls preload="metadata" />
-                      )}
-                      <div className="admin-media-meta">
-                        <p>{media.fileName}</p>
+                {files.length > 0 && (
+                  <div className="ea-file-grid">
+                    {files.map((file, index) => (
+                      <div key={`${file.name}-${file.size}-${index}`} className="ea-file-card">
+                        {file.type.startsWith('image/') ? (
+                          <img src={URL.createObjectURL(file)} alt={file.name} />
+                        ) : (
+                          <div className="ea-file-video-icon">
+                            <Video size={20} />
+                          </div>
+                        )}
+                        <div className="ea-file-meta">
+                          <span>{file.name}</span>
+                          <span>{Math.ceil(file.size / 1024)} KB</span>
+                        </div>
+                        <button type="button" className="ea-file-remove" onClick={() => removeFile(index)}>
+                          <X size={12} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </fieldset>
+
+              <div className="ea-form-footer">
+                {loading && progress > 0 && (
+                  <div className="ea-progress">
+                    <div style={{ width: `${progress}%` }} />
+                  </div>
+                )}
+                <div className="ea-form-actions">
+                  <button type="submit" className="ea-btn ea-btn-primary" disabled={loading}>
+                    {loading && <Loader2 size={15} className="ea-spin" />}
+                    {loading ? 'Saving...' : editId ? 'Update event' : 'Create event'}
+                  </button>
+                  {editId && (
+                    <button type="button" className="ea-btn ea-btn-ghost" onClick={resetForm} disabled={loading}>
+                      Cancel
+                    </button>
+                  )}
+                </div>
+              </div>
+            </form>
+          </section>
+
+          <section className="ea-card ea-list-card">
+            <div className="ea-card-header">
+              <h2>All events</h2>
+              <span className="ea-count-pill">{events.length}</span>
+            </div>
+
+            <div className="ea-event-list">
+              {events.length === 0 && <p className="ea-empty-note">No events created yet.</p>}
+              {events.map((eventItem) => {
+                const imageCount = eventItem.media.filter((m) => m.type === 'image').length;
+                const videoCount = eventItem.media.filter((m) => m.type === 'video').length;
+                return (
+                  <article
+                    key={eventItem.id}
+                    className={`ea-event-block ${editId === eventItem.id ? 'is-editing' : ''}`}
+                  >
+                    <header className="ea-event-block-header">
+                      <div>
+                        <h3>{eventItem.title}</h3>
+                        <p>
+                          <Calendar size={12} /> {formatDate(eventItem.date)}
+                        </p>
+                      </div>
+                      <div className="ea-event-block-meta">
+                        <span className="ea-badge ea-badge-image">
+                          <ImageIcon size={11} /> {imageCount}
+                        </span>
+                        <span className="ea-badge ea-badge-video">
+                          <Video size={11} /> {videoCount}
+                        </span>
+                      </div>
+                      <div className="ea-row-actions">
+                        <button type="button" onClick={() => startEdit(eventItem)} title="Edit">
+                          <Pencil size={14} />
+                        </button>
                         <button
                           type="button"
                           className="danger"
-                          onClick={() => deleteMedia(eventItem.id, media.id)}
+                          onClick={() => deleteEvent(eventItem.id)}
+                          title="Delete"
                         >
-                          Remove media
+                          <Trash2 size={14} />
                         </button>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
+                    </header>
 
-        {editingEvent && (
-          <p className="admin-editing-note">
-            Editing: <strong>{editingEvent.title}</strong> ({formatDate(editingEvent.date)})
-          </p>
-        )}
+                    {eventItem.media.length === 0 ? (
+                      <p className="ea-empty-note">No media uploaded yet.</p>
+                    ) : (
+                      <div className="ea-media-grid">
+                        {eventItem.media.map((media) => (
+                          <div key={media.id} className="ea-media-card">
+                            {media.type === 'image' ? (
+                              <img src={media.url} alt={media.fileName} loading="lazy" />
+                            ) : (
+                              <video src={media.url} controls preload="metadata" />
+                            )}
+                            <button
+                              type="button"
+                              className="ea-media-remove"
+                              title="Remove media"
+                              onClick={() => deleteMedia(eventItem.id, media.id)}
+                            >
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        </div>
       </div>
     </main>
   );

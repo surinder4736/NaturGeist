@@ -1,29 +1,15 @@
-import { mkdir, readFile, writeFile } from 'fs/promises';
-import path from 'path';
+import { readJson, uploadJson } from '@/lib/cloud-store/json-store';
 import { UpcomingEventRecord, UpcomingEventsDataFile } from './types';
 
-const dataDir = path.join(process.cwd(), 'data');
-const filePath = path.join(dataDir, 'upcoming-events.json');
-
-async function ensureFile() {
-  await mkdir(dataDir, { recursive: true });
-  try {
-    await readFile(filePath, 'utf-8');
-  } catch {
-    const initial: UpcomingEventsDataFile = { events: [] };
-    await writeFile(filePath, JSON.stringify(initial, null, 2), 'utf-8');
-  }
-}
+const PUBLIC_ID = 'naturgeist/data/upcoming-events';
 
 function toTimestamp(date: string, startTime: string) {
   return new Date(`${date}T${startTime || '00:00'}`).getTime();
 }
 
-export async function readUpcomingEvents() {
-  await ensureFile();
-  const raw = await readFile(filePath, 'utf-8');
-  const parsed = JSON.parse(raw) as UpcomingEventsDataFile;
-  const events = parsed.events ?? [];
+export async function readUpcomingEvents(): Promise<UpcomingEventRecord[]> {
+  const payload = await readJson<UpcomingEventsDataFile>(PUBLIC_ID, { events: [] });
+  const events = payload.events ?? [];
 
   return events.sort(
     (a, b) => toTimestamp(a.date, a.startTime) - toTimestamp(b.date, b.startTime),
@@ -31,7 +17,6 @@ export async function readUpcomingEvents() {
 }
 
 export async function writeUpcomingEvents(events: UpcomingEventRecord[]) {
-  await ensureFile();
   const payload: UpcomingEventsDataFile = { events };
-  await writeFile(filePath, JSON.stringify(payload, null, 2), 'utf-8');
+  await uploadJson(PUBLIC_ID, payload);
 }

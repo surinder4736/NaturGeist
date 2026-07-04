@@ -1,99 +1,46 @@
-import { mkdir, unlink, writeFile } from 'fs/promises';
-import path from 'path';
 import { randomUUID } from 'crypto';
-
-function fileExtFromName(fileName: string) {
-  const ext = path.extname(fileName || '').replace('.', '').toLowerCase();
-  return ext || 'bin';
-}
+import { cloudinary } from '@/lib/cloudinary';
 
 function sanitizeSegment(value: string) {
   return value.replace(/[^a-zA-Z0-9-_]/g, '-');
 }
 
-function buildStoragePath(eventDate: string, eventId: string, fileName: string) {
-  const dateFolder = eventDate;
-  const ext = fileExtFromName(fileName);
-  return `events/${sanitizeSegment(dateFolder)}/${sanitizeSegment(eventId)}/${randomUUID()}.${ext}`;
+function buildPublicId(eventDate: string, eventId: string) {
+  return `naturgeist/events/${sanitizeSegment(eventDate)}/${sanitizeSegment(eventId)}-${randomUUID()}`;
 }
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const supabaseBucket = process.env.SUPABASE_STORAGE_BUCKET;
-
-function isSupabaseConfigured() {
-  return Boolean(supabaseUrl && supabaseServiceRoleKey && supabaseBucket);
-}
-
-async function uploadToSupabase(file: File, storagePath: string) {
-  const uploadUrl = `${supabaseUrl}/storage/v1/object/${supabaseBucket}/${storagePath}`;
-  const fileBuffer = Buffer.from(await file.arrayBuffer());
-
-  const uploadResponse = await fetch(uploadUrl, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${supabaseServiceRoleKey}`,
-      apikey: String(supabaseServiceRoleKey),
-      'x-upsert': 'true',
-      'Content-Type': file.type || 'application/octet-stream',
-    },
-    body: fileBuffer,
-  });
-
-  if (!uploadResponse.ok) {
-    const errorBody = await uploadResponse.text();
-    throw new Error(`Bucket upload failed: ${errorBody}`);
-  }
-
-  return `${supabaseUrl}/storage/v1/object/public/${supabaseBucket}/${storagePath}`;
-}
-
-async function deleteFromSupabase(storagePath: string) {
-  const deleteUrl = `${supabaseUrl}/storage/v1/object/${supabaseBucket}/${storagePath}`;
-  await fetch(deleteUrl, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${supabaseServiceRoleKey}`,
-      apikey: String(supabaseServiceRoleKey),
-    },
-  });
-}
-
-async function uploadToLocalPublic(file: File, storagePath: string) {
-  const outputPath = path.join(process.cwd(), 'public', 'uploads', storagePath);
-  await mkdir(path.dirname(outputPath), { recursive: true });
-  const fileBuffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(outputPath, fileBuffer);
-
-  return `/uploads/${storagePath}`;
-}
-
-async function deleteFromLocalPublic(storagePath: string) {
-  const outputPath = path.join(process.cwd(), 'public', 'uploads', storagePath);
-  try {
-    await unlink(outputPath);
-  } catch {
-    // Ignore missing local files.
-  }
+function detectResourceType(file: File): 'image' | 'video' {
+  return file.type.startsWith('video/') ? 'video' : 'image';
 }
 
 export async function uploadEventMedia(file: File, eventDate: string, eventId: string) {
-  const storagePath = buildStoragePath(eventDate, eventId, file.name);
-  const url = isSupabaseConfigured()
-    ? await uploadToSupabase(file, storagePath)
-    : await uploadToLocalPublic(file, storagePath);
+  const fileBuffer = Buffer.from(await file.arrayBuffer());
+  const publicId = buildPublicId(eventDate, eventId);
+  const resourceType = detectResourceType(file);
+
+  const result = await new Promise<{ secure_url: string; public_id: string }>((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        public_id: publicId,
+        resource_type: resourceType,
+      },
+      (error, uploadResult) => {
+        if (error || !uploadResult) {
+          reject(new Error(error?.message || 'Cloudinary upload failed'));
+          return;
+        }
+        resolve(uploadResult);
+      },
+    );
+    uploadStream.end(fileBuffer);
+  });
 
   return {
-    url,
-    storagePath,
+    url: result.secure_url,
+    storagePath: result.public_id,
   };
 }
 
-export async function deleteEventMedia(storagePath: string) {
-  if (isSupabaseConfigured()) {
-    await deleteFromSupabase(storagePath);
-    return;
-  }
-
-  await deleteFromLocalPublic(storagePath);
+export async function deleteEventMedia(storagePath: string, resourceType: 'image' | 'video' = 'image') {
+  await cloudinary.uploader.destroy(storagePath, { resource_type: resourceType });
 }
