@@ -141,14 +141,15 @@ export default function Header() {
           <Link href="/our-approach" className="app-header-nav-link">
             Our Approach
           </Link>
-          <Link href="/team" className="app-header-nav-link">
-            Team
+          <Link href="/events" className="app-header-nav-link">
+            Events
           </Link>
+          
           <Link href="/join-us" className="app-header-nav-link">
           Join Us
           </Link>
-          <Link href="/events" className="app-header-nav-link">
-            Events
+          <Link href="/team" className="app-header-nav-link">
+            Team
           </Link>
           {/* <Link
             href="/join-us"

@@ -43,7 +43,7 @@ const APPROACH_PILLARS = [
   {
     icon: Handshake,
     title: "Partnerships",
-    text: "Collaborating with civil society organisations, educational institutions, government agencies, researchers, and corporate partners.",
+    text: "Collaborating with civil society organisations, educational institutions, government agencies, researchers, and corporate partners. naturgeistsociety@gmail.com",
   },
 ];
 
